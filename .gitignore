@@ -1,0 +1,25 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+
+# User files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# Packages
+packages/
+
+# VS Code
+.vscode/
+
+# Test Results
+TestResults/
+
+# Zip files
+*.zip
