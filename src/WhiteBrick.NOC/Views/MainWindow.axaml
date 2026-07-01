@@ -94,38 +94,35 @@
         </StackPanel>
       </Border>
 
-      <Border Grid.Row="1" Grid.Column="1" Margin="0,18,12,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="14">
-        <Grid RowDefinitions="Auto,Auto,*,Auto">
-          <TextBlock Text="INFRASTRUCTURE" FontSize="18" FontWeight="Bold" Foreground="#C8F6FF"/>
-          <StackPanel Grid.Row="1" Spacing="7" Margin="0,12,0,10">
-            <widgets:InfrastructureCardControl Height="44" DeviceName="Internet" Status="ONLINE" Load="0.96"/>
-            <widgets:InfrastructureCardControl Height="44" DeviceName="Gateway" Status="ONLINE" Load="0.87"/>
-            <widgets:InfrastructureCardControl Height="44" DeviceName="Honeycutt5" Status="ONLINE" Load="0.72"/>
-            <widgets:InfrastructureCardControl Height="44" DeviceName="Honeycuttt24" Status="ONLINE" Load="0.61"/>
-            <widgets:InfrastructureCardControl Height="44" DeviceName="WB-Core-01" Status="STAGED" Load="0.33"/>
-            <widgets:InfrastructureCardControl Height="44" DeviceName="My Book 01" Status="ONLINE" Load="0.82"/>
-            <widgets:InfrastructureCardControl Height="44" DeviceName="My Book 02" Status="ONLINE" Load="0.79"/>
-          </StackPanel>
-
-          <Border Grid.Row="2" CornerRadius="14" Background="#B0090C18" BorderBrush="#5B4CFF" BorderThickness="1" Padding="8">
-            <Grid RowDefinitions="*,*,*">
-              <widgets:HistoryGraphControl Values="{Binding HistoryValues}" Label="NETWORK SCORE"/>
-              <widgets:HistoryGraphControl Grid.Row="1" Values="{Binding LatencyValues}" Label="LATENCY"/>
-              <widgets:HistoryGraphControl Grid.Row="2" Values="{Binding CpuValues}" Label="CPU"/>
-            </Grid>
+      <Border Grid.Row="1" Grid.Column="1" Margin="0,18,12,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="12">
+        <StackPanel Spacing="10">
+          <Border CornerRadius="12" Background="#0A081018" BorderBrush="#245B7D" BorderThickness="1" Padding="10">
+            <StackPanel>
+              <TextBlock Text="NETWORK STATUS" FontSize="16" FontWeight="Bold" Foreground="#C8F6FF"/>
+              <StackPanel Spacing="6" Margin="0,8,0,0">
+                <widgets:InfrastructureCardControl Height="40" DeviceName="Internet" Status="ONLINE" Load="0.96"/>
+                <widgets:InfrastructureCardControl Height="40" DeviceName="Gateway" Status="ONLINE" Load="0.87"/>
+                <widgets:InfrastructureCardControl Height="40" DeviceName="WB-Core-01" Status="STAGED" Load="0.33"/>
+              </StackPanel>
+            </StackPanel>
           </Border>
 
-          <Grid Grid.Row="3" ColumnDefinitions="*,*" Margin="0,12,0,0">
-            <StackPanel>
-              <TextBlock Text="PACKETS / SEC" Foreground="#77C8E8"/>
-              <TextBlock Text="{Binding PacketRate}" Foreground="#8EF8FF" FontSize="24" FontWeight="Bold"/>
-            </StackPanel>
-            <StackPanel Grid.Column="1">
-              <TextBlock Text="HEALTH" Foreground="#77C8E8"/>
-              <TextBlock Text="NOMINAL" Foreground="#6EFFA1" FontSize="24" FontWeight="Bold"/>
-            </StackPanel>
-          </Grid>
-        </Grid>
+          <Border CornerRadius="12" Background="#0A081018" BorderBrush="#1F6A8D" BorderThickness="1" Padding="10">
+            <TextBlock Text="DEVICES" FontSize="14" FontWeight="Bold" Foreground="#C8F6FF"/>
+          </Border>
+
+          <Border CornerRadius="12" Background="#0A081018" BorderBrush="#19B6D2" BorderThickness="1" Padding="10">
+            <TextBlock Text="POWER" FontSize="14" FontWeight="Bold" Foreground="#C8F6FF"/>
+          </Border>
+
+          <Border CornerRadius="12" Background="#0A081018" BorderBrush="#5B4CFF" BorderThickness="1" Padding="10">
+            <TextBlock Text="STORAGE" FontSize="14" FontWeight="Bold" Foreground="#C8F6FF"/>
+          </Border>
+
+          <Border CornerRadius="12" Background="#0A081018" BorderBrush="#2C3A55" BorderThickness="1" Padding="10">
+            <TextBlock Text="WHITE BRICK" FontSize="14" FontWeight="Bold" Foreground="#C8F6FF"/>
+          </Border>
+        </StackPanel>
       </Border>
 
       <Border Grid.Row="1" Grid.Column="2" Margin="6,18,6,0" CornerRadius="24" Background="#D006101F" BorderBrush="#19B6D2" BorderThickness="1" Padding="18">
@@ -163,8 +160,8 @@
       </Border>
 
 <Border Grid.Row="1" Grid.Column="3" Margin="12,18,0,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="12">
-  <Grid RowDefinitions="Auto,120,130,122,*,130">
-    <TextBlock Text="OPERATIONS STACK" FontSize="18" FontWeight="Bold" Foreground="#C8F6FF"/>
+  <Grid RowDefinitions="Auto,120,130,122,*,90,90" RowSpacing="8">
+    <TextBlock Text="LIVE CONSOLE" FontSize="18" FontWeight="Bold" Foreground="#C8F6FF"/>
 
     <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="0,10,0,0">
       <widgets:SystemMicroPanelControl Cpu="{Binding Cpu}" Memory="{Binding Memory}" Packets="{Binding PacketRate}" Mode="{Binding OperatingMode}"/>
@@ -172,49 +169,32 @@
         <widgets:GaugeRingControl Value="32" Label="CPU"/>
         <widgets:GaugeRingControl Grid.Column="1" Value="48" Label="MEM"/>
       </Grid>
-      <!-- Bottom status bar -->
-      <Border Grid.Row="2" Grid.ColumnSpan="4" CornerRadius="10" Background="#0B061014" BorderBrush="#123341" BorderThickness="1" Padding="10" Margin="0,12,0,0">
-        <Grid ColumnDefinitions="1*,1*,1*,1*,1*">
-          <StackPanel>
-            <TextBlock Text="SYSTEM HEALTH" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
-          </StackPanel>
-          <StackPanel Grid.Column="1">
-            <TextBlock Text="TRAFFIC" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
-          </StackPanel>
-          <StackPanel Grid.Column="2">
-            <TextBlock Text="LATENCY" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
-          </StackPanel>
-          <StackPanel Grid.Column="3">
-            <TextBlock Text="ALERTS" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
-          </StackPanel>
-          <StackPanel Grid.Column="4">
-            <TextBlock Text="UPTIME" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
-          </StackPanel>
-        </Grid>
-      </Border>
-
     </Grid>
 
-    <Border Grid.Row="2" Margin="0,10,0,0" CornerRadius="10" Background="#B0090C18" BorderBrush="#245B7D" BorderThickness="1" Padding="0">
+    <Border Grid.Row="2" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#245B7D" BorderThickness="1" Padding="8">
       <widgets:WeatherPulseControl Temperature="{Binding WeatherTemperature}" Condition="{Binding WeatherCondition}" Wind="{Binding WeatherWind}"/>
     </Border>
 
-    <Border Grid.Row="3" Margin="0,10,0,0" CornerRadius="10" Background="#B0090C18" BorderBrush="#24D7FF" BorderThickness="1" Padding="6">
+    <Border Grid.Row="3" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#24D7FF" BorderThickness="1" Padding="8">
       <Grid RowDefinitions="Auto,*">
-        <TextBlock Text="RADAR / DEVICE SWEEP" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
+        <TextBlock Text="NETWORK RADAR" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
         <widgets:RadarControl Grid.Row="1" Margin="0,4,0,0"/>
       </Grid>
     </Border>
 
-    <Border Grid.Row="4" Margin="0,10,0,0" CornerRadius="10" Background="#D0050811" BorderBrush="#2C3A55" BorderThickness="1" Padding="8">
+    <Border Grid.Row="4" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#2C3A55" BorderThickness="1" Padding="8">
       <Grid RowDefinitions="Auto,*">
-        <TextBlock Text="LIVE CONSOLE" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
+        <TextBlock Text="LIVE LOG" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
         <ListBox Grid.Row="1" ItemsSource="{Binding ConsoleLines}" Background="Transparent" BorderThickness="0" Foreground="#BDEEFF" FontSize="11"/>
       </Grid>
     </Border>
 
-    <Border Grid.Row="5" Margin="0,10,0,0" CornerRadius="10" Background="#B0090C18" BorderBrush="#5B4CFF" BorderThickness="1" Padding="0">
-      <widgets:TimelineStreamControl Events="{Binding TimelineEvents}"/>
+    <Border Grid.Row="5" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#5B4CFF" BorderThickness="1" Padding="8">
+      <TextBlock Text="CAMERAS" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
+    </Border>
+
+    <Border Grid.Row="6" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#1F6A8D" BorderThickness="1" Padding="8">
+      <TextBlock Text="PACKET INSPECTOR" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
     </Border>
   </Grid>
 </Border>
