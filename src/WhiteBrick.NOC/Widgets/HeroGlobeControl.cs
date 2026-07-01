@@ -182,6 +182,69 @@ public sealed class HeroGlobeControl : AnimatedWidgetBase
 
         var subText = new FormattedText("WB-CORE • HONEYCUTT • WAN LINK", System.Globalization.CultureInfo.InvariantCulture, FlowDirection.LeftToRight, Typeface.Default, 10, new SolidColorBrush(Color.FromArgb(180, 119, 200, 232)));
         context.DrawText(subText, new Point(cx - subText.Width / 2, cy + r + 44));
+
+        // Living NOC overlay (Sprint 5): premium status panel with simulated values
+        // Keep the overlay subtle and non-dominant; update values with low-frequency sinusoidal math.
+        var overlayPad = 12.0;
+        var overlayW = Math.Min(240, Bounds.Width * 0.36);
+        var overlayH = 140.0;
+        var overlayX = overlayPad;
+        var overlayY = overlayPad;
+
+        // background and border - very subtle
+        var bgBrush = new SolidColorBrush(Color.FromArgb(40, 6, 12, 18));
+        var borderBrush = new SolidColorBrush(Color.FromArgb(60, 80, 130, 170));
+        context.FillRectangle(bgBrush, new Rect(overlayX, overlayY, overlayW, overlayH));
+        context.DrawRectangle(new Pen(borderBrush, 1.0), new Rect(overlayX, overlayY, overlayW, overlayH));
+
+        // Simulated values
+        var t2 = TimeSeconds;
+        // Nodes stable
+        var nodesText = "08 / 08";
+        // Health stays at or very near 100
+        var healthVal = 100 - (int)(0.12 * Math.Abs(Math.Sin(t2 * 0.03)));
+        // Traffic fluctuates gently around 2.8 Gbps
+        var trafficVal = 2.6 + Math.Abs(Math.Sin(t2 * 0.42 + 0.9)) * 0.6; // 2.6..3.2
+        // Latency small fluctuations around 1.3 ms
+        var latencyVal = 1.0 + Math.Abs(Math.Sin(t2 * 1.1 + 0.4)) * 1.2; // 1.0..2.2
+        // Alerts usually zero (very rare bump simulated by slow wave)
+        var alertWave = Math.Abs(Math.Sin(t2 * 0.015 + 0.7));
+        var alertsVal = (alertWave > 0.995) ? 1 : 0;
+        // Uptime base 17d 04h plus running seconds
+        var baseUptimeSeconds = (17 * 24 + 4) * 3600; // preserve given baseline
+        var uptimeSeconds = baseUptimeSeconds + (int)t2;
+        var uptimeDays = uptimeSeconds / 86400;
+        var uptimeHours = (uptimeSeconds % 86400) / 3600;
+
+        // Typography
+        var titleFace = Typeface.Default;
+        var titleBrush = new SolidColorBrush(Color.FromRgb(200, 245, 255));
+        var valueBrush = new SolidColorBrush(Color.FromRgb(180, 220, 235));
+        var dimBrush = new SolidColorBrush(Color.FromArgb(160, 110, 160, 190));
+
+        double x = overlayX + 12;
+        double y = overlayY + 10;
+        var title = new FormattedText("SYSTEM STATUS", System.Globalization.CultureInfo.InvariantCulture, FlowDirection.LeftToRight, titleFace, 12, dimBrush);
+        context.DrawText(title, new Point(x, y));
+        var online = new FormattedText("ONLINE", System.Globalization.CultureInfo.InvariantCulture, FlowDirection.LeftToRight, titleFace, 14, new SolidColorBrush(Color.FromArgb(220, 120, 255, 170)));
+        context.DrawText(online, new Point(x + title.Width + 8, y - 1));
+
+        y += 26;
+        void DrawLineLabel(string label, string value)
+        {
+            var lbl = new FormattedText(label, System.Globalization.CultureInfo.InvariantCulture, FlowDirection.LeftToRight, titleFace, 11, dimBrush);
+            var val = new FormattedText(value, System.Globalization.CultureInfo.InvariantCulture, FlowDirection.LeftToRight, titleFace, 12, valueBrush);
+            context.DrawText(lbl, new Point(x, y));
+            context.DrawText(val, new Point(x + overlayW - lbl.Width - val.Width - 24, y));
+            y += 18;
+        }
+
+        DrawLineLabel("Nodes ........", nodesText);
+        DrawLineLabel("Health .......", healthVal.ToString() + "%");
+        DrawLineLabel("Traffic ......", trafficVal.ToString("0.0") + " Gbps");
+        DrawLineLabel("Latency ......", latencyVal.ToString("0.0") + " ms");
+        DrawLineLabel("Alerts .......", alertsVal.ToString());
+        DrawLineLabel("Uptime .......", string.Format("{0}d {1:D2}h", uptimeDays, uptimeHours));
     }
 
     private void DrawContinents(DrawingContext context, double cx, double cy, double r)
