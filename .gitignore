@@ -23,3 +23,16 @@ TestResults/
 
 # Zip files
 *.zip
+
+# .NET build output
+**/bin/
+**/obj/
+
+# Visual Studio generated files
+*.dll
+*.exe
+*.pdb
+*.cache
+*.assets.cache
+*.nuget.cache
+*.FileListAbsolute.txt
