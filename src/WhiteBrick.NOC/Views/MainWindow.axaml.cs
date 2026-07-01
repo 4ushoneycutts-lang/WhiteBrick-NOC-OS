@@ -6,6 +6,8 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Layout;
 using Avalonia;
 using System.Diagnostics;
+using WhiteBrick.NOC.Utilities;
+using WhiteBrick.NOC.Widgets;
 
 namespace WhiteBrick.NOC.Views;
 
@@ -59,5 +61,23 @@ public partial class MainWindow : Window
                 vm.ToggleDeveloperOverlay();
             }
         };
+
+        // Attach calibration overlay in debug mode (isolated; production unaffected)
+        if (DebugConfig.CalibrationModeEnabled)
+        {
+            try
+            {
+                var root = this.Content as Panel;
+                if (root != null)
+                {
+                    var overlay = new CalibrationOverlayControl { IsHitTestVisible = false };
+                    root.Children.Add(overlay);
+                }
+            }
+            catch
+            {
+                // Swallow any calibration overlay attach errors in production builds.
+            }
+        }
     }
 }
