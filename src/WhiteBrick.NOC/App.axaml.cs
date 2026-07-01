@@ -18,11 +18,20 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var runtime = NocRuntime.CreateDefault();
-            desktop.MainWindow = new MainWindow
+            if (WhiteBrick.NOC.Utilities.DebugConfig.CalibrationModeEnabled)
             {
-                DataContext = new MainWindowViewModel(runtime)
-            };
+                // Launch calibration window instead of the production dashboard
+                var calib = new Views.CalibrationWindow();
+                desktop.MainWindow = calib;
+            }
+            else
+            {
+                var runtime = NocRuntime.CreateDefault();
+                desktop.MainWindow = new MainWindow
+                {
+                    DataContext = new MainWindowViewModel(runtime)
+                };
+            }
         }
 
         base.OnFrameworkInitializationCompleted();
