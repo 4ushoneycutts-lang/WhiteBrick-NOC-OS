@@ -79,42 +79,42 @@
       </Border>
 
       <!-- Left operations column: denser enterprise-style status rows -->
-      <Border Grid.Row="1" Grid.Column="0" Margin="0,18,12,0" CornerRadius="12" Background="#081018" BorderBrush="#123642" BorderThickness="1" Padding="10">
-        <StackPanel Spacing="8">
-          <TextBlock Text="OPERATIONS" FontSize="13" FontWeight="Bold" Foreground="#C8F6FF" Margin="6,4"/>
+      <Border Grid.Row="1" Grid.Column="0" Margin="0,22,16,0" CornerRadius="12" Background="#081018" BorderBrush="#123642" BorderThickness="1" Padding="14">
+        <StackPanel Spacing="12">
+          <TextBlock Text="OPERATIONS" FontSize="20" FontWeight="Bold" Foreground="#C8F6FF" Margin="6,4"/>
 
           <!-- NETWORK STATUS -->
           <Border CornerRadius="8" Background="#061018" BorderBrush="#1F6A8D" BorderThickness="1" Padding="8">
-            <StackPanel Spacing="6">
-              <TextBlock Text="NETWORK STATUS" FontSize="12" FontWeight="Bold" Foreground="#D9F7FF"/>
               <StackPanel Spacing="6">
-                <Grid ColumnDefinitions="22,*,Auto" VerticalAlignment="Center">
-                  <Ellipse Width="12" Height="12" Fill="#6EFFA1" Stroke="#133B2E" StrokeThickness="1" VerticalAlignment="Center"/>
+                <TextBlock Text="NETWORK STATUS" FontSize="16" FontWeight="Bold" Foreground="#D9F7FF"/>
+              <StackPanel Spacing="6">
+                <Grid ColumnDefinitions="26,*,Auto" VerticalAlignment="Center">
+                  <Ellipse Width="14" Height="14" Fill="#6EFFA1" Stroke="#133B2E" StrokeThickness="1" VerticalAlignment="Center"/>
                   <TextBlock Grid.Column="1" Text="Internet" Foreground="#BDEEFF" VerticalAlignment="Center" Margin="8,0"/>
                   <TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1" VerticalAlignment="Center" Margin="8,0"/>
                 </Grid>
-                <Grid ColumnDefinitions="22,*,Auto">
-                  <Ellipse Width="12" Height="12" Fill="#8EF8FF" Stroke="#16343C" StrokeThickness="1"/>
+                <Grid ColumnDefinitions="26,*,Auto">
+                  <Ellipse Width="14" Height="14" Fill="#8EF8FF" Stroke="#16343C" StrokeThickness="1"/>
                   <TextBlock Grid.Column="1" Text="Router" Foreground="#BDEEFF" Margin="8,0"/>
                   <TextBlock Grid.Column="2" Text="ONLINE" Foreground="#8EF8FF"/>
                 </Grid>
-                <Grid ColumnDefinitions="22,*,Auto">
-                  <Ellipse Width="12" Height="12" Fill="#FFD28A" Stroke="#42321A" StrokeThickness="1"/>
+                <Grid ColumnDefinitions="26,*,Auto">
+                  <Ellipse Width="14" Height="14" Fill="#FFD28A" Stroke="#42321A" StrokeThickness="1"/>
                   <TextBlock Grid.Column="1" Text="Firewall" Foreground="#BDEEFF" Margin="8,0"/>
                   <TextBlock Grid.Column="2" Text="NOMINAL" Foreground="#FFD28A"/>
                 </Grid>
-                <Grid ColumnDefinitions="22,*,Auto">
-                  <Ellipse Width="12" Height="12" Fill="#6EFFA1" Stroke="#133B2E" StrokeThickness="1"/>
+                <Grid ColumnDefinitions="26,*,Auto">
+                  <Ellipse Width="14" Height="14" Fill="#6EFFA1" Stroke="#133B2E" StrokeThickness="1"/>
                   <TextBlock Grid.Column="1" Text="Core Switch" Foreground="#BDEEFF" Margin="8,0"/>
                   <TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1"/>
                 </Grid>
-                <Grid ColumnDefinitions="22,*,Auto">
-                  <Ellipse Width="12" Height="12" Fill="#8FCDD9" Stroke="#0F2E34" StrokeThickness="1"/>
+                <Grid ColumnDefinitions="26,*,Auto">
+                  <Ellipse Width="14" Height="14" Fill="#8FCDD9" Stroke="#0F2E34" StrokeThickness="1"/>
                   <TextBlock Grid.Column="1" Text="DNS" Foreground="#BDEEFF" Margin="8,0"/>
                   <TextBlock Grid.Column="2" Text="OK" Foreground="#8FCDD9"/>
                 </Grid>
-                <Grid ColumnDefinitions="22,*,Auto">
-                  <Ellipse Width="12" Height="12" Fill="#8FCDD9" Stroke="#0F2E34" StrokeThickness="1"/>
+                <Grid ColumnDefinitions="26,*,Auto">
+                  <Ellipse Width="14" Height="14" Fill="#8FCDD9" Stroke="#0F2E34" StrokeThickness="1"/>
                   <TextBlock Grid.Column="1" Text="VPN" Foreground="#BDEEFF" Margin="8,0"/>
                   <TextBlock Grid.Column="2" Text="OK" Foreground="#8FCDD9"/>
                 </Grid>
@@ -125,14 +125,14 @@
           <!-- DEVICES -->
           <Border CornerRadius="8" Background="#061018" BorderBrush="#1F6A8D" BorderThickness="1" Padding="8">
             <StackPanel>
-              <TextBlock Text="DEVICES" FontSize="12" FontWeight="Bold" Foreground="#D9F7FF"/>
+              <TextBlock Text="DEVICES" FontSize="16" FontWeight="Bold" Foreground="#D9F7FF"/>
               <StackPanel Spacing="6">
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Online Devices" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="128" Foreground="#8EF8FF"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Offline Devices" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="02" Foreground="#8899AA"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#8EF8FF"/><TextBlock Grid.Column="1" Text="Cameras" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="12" Foreground="#8EF8FF"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Servers" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="24" Foreground="#6EFFA1"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#8FCDD9"/><TextBlock Grid.Column="1" Text="PCs" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="56" Foreground="#8FCDD9"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="IoT" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="32" Foreground="#8899AA"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Online Devices" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="128" Foreground="#8EF8FF"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Offline Devices" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="02" Foreground="#8899AA"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8EF8FF"/><TextBlock Grid.Column="1" Text="Cameras" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="12" Foreground="#8EF8FF"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Servers" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="24" Foreground="#6EFFA1"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8FCDD9"/><TextBlock Grid.Column="1" Text="PCs" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="56" Foreground="#8FCDD9"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="IoT" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="32" Foreground="#8899AA"/></Grid>
               </StackPanel>
             </StackPanel>
           </Border>
@@ -140,12 +140,12 @@
           <!-- POWER -->
           <Border CornerRadius="8" Background="#061018" BorderBrush="#19B6D2" BorderThickness="1" Padding="8">
             <StackPanel>
-              <TextBlock Text="POWER" FontSize="12" FontWeight="Bold" Foreground="#D9F7FF"/>
+              <TextBlock Text="POWER" FontSize="16" FontWeight="Bold" Foreground="#D9F7FF"/>
               <StackPanel Spacing="6">
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#8FCDD9"/><TextBlock Grid.Column="1" Text="Utility" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="OK" Foreground="#8FCDD9"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="UPS" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="NORMAL" Foreground="#6EFFA1"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#FFD28A"/><TextBlock Grid.Column="1" Text="Battery" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="84%" Foreground="#FFD28A"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Runtime" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="3h 12m" Foreground="#8899AA"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8FCDD9"/><TextBlock Grid.Column="1" Text="Utility" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="OK" Foreground="#8FCDD9"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="UPS" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="NORMAL" Foreground="#6EFFA1"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#FFD28A"/><TextBlock Grid.Column="1" Text="Battery" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="84%" Foreground="#FFD28A"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Runtime" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="3h 12m" Foreground="#8899AA"/></Grid>
               </StackPanel>
             </StackPanel>
           </Border>
@@ -153,12 +153,12 @@
           <!-- STORAGE -->
           <Border CornerRadius="8" Background="#061018" BorderBrush="#5B4CFF" BorderThickness="1" Padding="8">
             <StackPanel>
-              <TextBlock Text="STORAGE" FontSize="12" FontWeight="Bold" Foreground="#D9F7FF"/>
+              <TextBlock Text="STORAGE" FontSize="16" FontWeight="Bold" Foreground="#D9F7FF"/>
               <StackPanel Spacing="6">
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="NAS 1" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#8FCDD9"/><TextBlock Grid.Column="1" Text="NAS 2" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#8FCDD9"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Available Space" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="12.4 TB" Foreground="#8899AA"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#FFD28A"/><TextBlock Grid.Column="1" Text="RAID Status" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="DEGRADED" Foreground="#FFD28A"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="NAS 1" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8FCDD9"/><TextBlock Grid.Column="1" Text="NAS 2" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#8FCDD9"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Available Space" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="12.4 TB" Foreground="#8899AA"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#FFD28A"/><TextBlock Grid.Column="1" Text="RAID Status" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="DEGRADED" Foreground="#FFD28A"/></Grid>
               </StackPanel>
             </StackPanel>
           </Border>
@@ -166,12 +166,12 @@
           <!-- WHITE BRICK -->
           <Border CornerRadius="8" Background="#061018" BorderBrush="#2C3A55" BorderThickness="1" Padding="8">
             <StackPanel>
-              <TextBlock Text="WHITE BRICK" FontSize="12" FontWeight="Bold" Foreground="#D9F7FF"/>
+              <TextBlock Text="WHITE BRICK" FontSize="16" FontWeight="Bold" Foreground="#D9F7FF"/>
               <StackPanel Spacing="6">
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Main Brain" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Nodes Online" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="08 / 08" Foreground="#8EF8FF"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#8FCDD9"/><TextBlock Grid.Column="1" Text="CAN Bus" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="OK" Foreground="#8FCDD9"/></Grid>
-                <Grid ColumnDefinitions="22,*,Auto"><Ellipse Width="10" Height="10" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Services" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="Active" Foreground="#6EFFA1"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Main Brain" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Nodes Online" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="08 / 08" Foreground="#8EF8FF"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8FCDD9"/><TextBlock Grid.Column="1" Text="CAN Bus" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="OK" Foreground="#8FCDD9"/></Grid>
+                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Services" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="Active" Foreground="#6EFFA1"/></Grid>
               </StackPanel>
             </StackPanel>
           </Border>
@@ -180,11 +180,11 @@
 
       <!-- middle-left column removed to consolidate left monitor panels into column 0 -->
 
-      <Border Grid.Row="1" Grid.Column="1" Margin="6,18,6,0" CornerRadius="24" Background="#D006101F" BorderBrush="#19B6D2" BorderThickness="1" Padding="18">
-        <Grid RowDefinitions="*,130,Auto">
-          <widgets:HeroGlobeControl/>
+      <Border Grid.Row="1" Grid.Column="1" Margin="8,18,8,0" CornerRadius="24" Background="#D006101F" BorderBrush="#19B6D2" BorderThickness="1" Padding="18">
+        <Grid RowDefinitions="1.25*,160,Auto">
+          <widgets:HeroGlobeControl MaxHeight="760" MinHeight="420" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 
-          <Grid Grid.Row="1" ColumnDefinitions="1.45*,*" Margin="0,8,0,0">
+          <Grid Grid.Row="1" ColumnDefinitions="1.6*,*" Margin="0,8,0,0">
             <Border CornerRadius="16" Background="#8A081020" BorderBrush="#245B7D" BorderThickness="1">
               <widgets:PacketStreamControl/>
             </Border>
@@ -193,7 +193,7 @@
             </Border>
           </Grid>
 
-          <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*" Margin="0,16,0,0">
+          <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*" Margin="0,12,0,0">
             <StackPanel>
               <TextBlock Text="NETWORK SCORE" Foreground="#77C8E8"/>
               <TextBlock Text="{Binding NetworkScore}" Foreground="#6EFFA1" FontSize="34" FontWeight="Bold"/>
@@ -214,9 +214,9 @@
         </Grid>
       </Border>
 
-<Border Grid.Row="1" Grid.Column="2" Margin="12,18,0,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="12">
-  <Grid RowDefinitions="Auto,120,130,122,*,90,90" RowSpacing="8">
-    <TextBlock Text="LIVE CONSOLE" FontSize="18" FontWeight="Bold" Foreground="#C8F6FF"/>
+<Border Grid.Row="1" Grid.Column="2" Margin="12,18,0,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="14">
+  <Grid RowDefinitions="Auto,140,140,140,*,140,140" RowSpacing="12">
+    <TextBlock Text="LIVE CONSOLE" FontSize="22" FontWeight="Bold" Foreground="#C8F6FF"/>
 
     <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="0,10,0,0">
       <widgets:SystemMicroPanelControl Cpu="{Binding Cpu}" Memory="{Binding Memory}" Packets="{Binding PacketRate}" Mode="{Binding OperatingMode}"/>
@@ -226,7 +226,7 @@
       </Grid>
     </Grid>
 
-    <Border Grid.Row="2" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#245B7D" BorderThickness="1" Padding="10">
+    <Border Grid.Row="2" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#245B7D" BorderThickness="1" Padding="12">
       <StackPanel>
         <TextBlock Text="WEATHER" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
         <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
@@ -243,7 +243,7 @@
       </StackPanel>
     </Border>
 
-    <Border Grid.Row="3" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#24D7FF" BorderThickness="1" Padding="8">
+    <Border Grid.Row="3" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#24D7FF" BorderThickness="1" Padding="10">
       <Grid RowDefinitions="Auto,*">
         <TextBlock Text="NETWORK RADAR" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
         <Grid Grid.Row="1" Margin="0,6,0,0">
@@ -258,19 +258,19 @@
       </Grid>
     </Border>
 
-    <Border Grid.Row="4" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#2C3A55" BorderThickness="1" Padding="8">
+    <Border Grid.Row="4" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#2C3A55" BorderThickness="1" Padding="12">
       <StackPanel>
-        <TextBlock Text="LIVE CONSOLE" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
-        <StackPanel Margin="0,8,0,0" Spacing="6">
-          <TextBlock Text="[12:03:21] INFO  System initialized" Foreground="#BDEEFF" FontSize="11"/>
-          <TextBlock Text="[12:05:04] OK    WAN link stable" Foreground="#6EFFA1" FontSize="11"/>
-          <TextBlock Text="[12:08:12] WARN  Packet loss detected" Foreground="#FFD28A" FontSize="11"/>
-          <TextBlock Text="[12:10:01] INFO  Backup started" Foreground="#BDEEFF" FontSize="11"/>
+        <TextBlock Text="LIVE CONSOLE" Foreground="#BDEEFF" FontSize="16" FontWeight="Bold"/>
+        <StackPanel Margin="0,10,0,0" Spacing="8">
+          <TextBlock Text="[12:03:21] INFO  System initialized" Foreground="#BDEEFF" FontSize="13"/>
+          <TextBlock Text="[12:05:04] OK    WAN link stable" Foreground="#6EFFA1" FontSize="13"/>
+          <TextBlock Text="[12:08:12] WARN  Packet loss detected" Foreground="#FFD28A" FontSize="13"/>
+          <TextBlock Text="[12:10:01] INFO  Backup started" Foreground="#BDEEFF" FontSize="13"/>
         </StackPanel>
       </StackPanel>
     </Border>
 
-    <Border Grid.Row="5" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#5B4CFF" BorderThickness="1" Padding="8">
+    <Border Grid.Row="5" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#5B4CFF" BorderThickness="1" Padding="10">
       <StackPanel>
         <TextBlock Text="CAMERAS" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
         <StackPanel Margin="0,8,0,0" Spacing="6">
@@ -282,7 +282,7 @@
       </StackPanel>
     </Border>
 
-    <Border Grid.Row="6" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#1F6A8D" BorderThickness="1" Padding="8">
+    <Border Grid.Row="6" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#1F6A8D" BorderThickness="1" Padding="10">
       <StackPanel>
         <TextBlock Text="PACKET INSPECTOR" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
         <Grid Margin="0,8,0,0">
