@@ -131,6 +131,44 @@ public sealed class HeroGlobeControl : AnimatedWidgetBase
         }
 
         var beaconPulse = 0.55 + 0.45 * Math.Sin(t * 3.2 + 0.4);
+
+        // Telemetry data rings (Sprint 4): very faint orbital data rings with slow rotation
+        // and occasional tiny telemetry indicators traveling along them. High transparency
+        // and low geometry count keep CPU usage minimal.
+        int telemetryRings = 3;
+        var telemetryColors = new[] { Color.FromArgb(28, 180, 220, 255), Color.FromArgb(24, 160, 210, 230), Color.FromArgb(20, 140, 200, 220) };
+        for (int ri = 0; ri < telemetryRings; ri++)
+        {
+            var tr = r * (1.06 + ri * 0.12);
+            var tvs = 0.20 + ri * 0.06; // flattened ring
+            var dir = ri % 2 == 0 ? 1.0 : -1.0;
+            var speed = 0.08 + ri * 0.03; // very slow
+            var seed = ri * 1.37;
+            var ringAngle = dir * (t * speed + Math.Sin(t * (0.05 + ri * 0.02) + seed) * 0.02);
+
+            // Draw faint single-stroke ring
+            var ringPen = new Pen(new SolidColorBrush(telemetryColors[ri % telemetryColors.Length]), 1.0);
+            context.DrawEllipse(null, ringPen, new Point(cx, cy), tr, tr * tvs);
+
+            // Draw 1-2 tiny telemetry indicators traveling along the ring. Alpha varies so they
+            // appear and fade gently rather than pop in/out abruptly.
+            int indicators = 1 + (ri % 2);
+            for (int ind = 0; ind < indicators; ind++)
+            {
+                var localOffset = ind * (Math.PI * 0.9 / Math.Max(1, indicators));
+                var indSpeed = speed * (1.0 + 0.2 * ind) * (0.8 + 0.15 * Math.Sin(seed + ind));
+                var indProg = (t * indSpeed + seed * 0.23) % (Math.PI * 2);
+                var ia = ringAngle + localOffset + indProg;
+                var ix = cx + Math.Cos(ia) * tr;
+                var iy = cy + Math.Sin(ia) * tr * tvs;
+
+                // occasional subtle pulsing visibility
+                var vis = 0.35 + 0.65 * Math.Abs(Math.Sin(t * (0.9 + ri * 0.15) + ind * 0.4 + seed));
+                var indBrush = new SolidColorBrush(Color.FromArgb((byte)(40 + 120 * vis), 225, 245, 255));
+                context.DrawEllipse(indBrush, null, new Point(ix, iy), 2.2, 2.2);
+                context.DrawEllipse(new SolidColorBrush(Color.FromArgb((byte)(30 * vis), 180, 220, 255)), null, new Point(ix, iy), 5.0 * vis, 2.0 * vis);
+            }
+        }
         var beaconDrift = 0.6 + 0.4 * Math.Sin(t * 1.1 + 0.2);
         var beaconCenter = new Point(cx + r * (0.24 + 0.02 * Math.Sin(t * 0.8)), cy - r * (0.18 + 0.01 * Math.Cos(t * 0.9)));
         var beaconHalo = new SolidColorBrush(Color.FromArgb((byte)(70 + 70 * beaconPulse), 110, 255, 161));
