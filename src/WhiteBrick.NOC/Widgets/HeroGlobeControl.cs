@@ -15,7 +15,10 @@ public sealed class HeroGlobeControl : AnimatedWidgetBase
         var cy = h / 2;
         var r = Math.Min(w, h) * 0.34;
 
-        var atmospherePulse = 0.55 + 0.22 * Math.Sin(TimeSeconds * 1.2 + 0.4);
+        var t = TimeSeconds;
+        var atmospherePulse = 0.55 + 0.22 * Math.Sin(t * 1.2 + 0.4);
+        var drift = 0.08 * Math.Sin(t * 0.7 + 0.5);
+        var sweep = t * 0.86 + drift;
         var halo = new RadialGradientBrush
         {
             GradientStops =
@@ -39,26 +42,28 @@ public sealed class HeroGlobeControl : AnimatedWidgetBase
 
         for (int i = 0; i < 10; i++)
         {
-            var angle = TimeSeconds * 0.45 + i * Math.PI / 10;
-            var xScale = 0.7 + 0.3 * Math.Abs(Math.Cos(angle));
-            context.DrawEllipse(null, innerPen, new Point(cx, cy), r * xScale, r * 0.95);
+            var angle = sweep * 0.52 + i * Math.PI / 10;
+            var xScale = 0.72 + 0.28 * Math.Abs(Math.Cos(angle));
+            var yScale = 0.92 + 0.08 * Math.Sin(angle * 0.7 + 0.5);
+            context.DrawEllipse(null, innerPen, new Point(cx, cy), r * xScale, r * yScale);
         }
 
         DrawContinents(context, cx, cy, r);
-        DrawOrbitalRing(context, cx, cy, r * 1.12, 0.26, TimeSeconds * 1.35, 0.0, Color.FromArgb(190, 120, 248, 255));
-        DrawOrbitalRing(context, cx, cy, r * 1.28, 0.18, -TimeSeconds * 1.05 + 1.2, 0.9, Color.FromArgb(185, 110, 255, 161));
-        DrawOrbitalRing(context, cx, cy, r * 1.46, 0.14, TimeSeconds * 0.82 + 2.1, 1.6, Color.FromArgb(175, 166, 126, 255));
+        DrawOrbitalRing(context, cx, cy, r * 1.12, 0.26, sweep * 1.18, 0.15, Color.FromArgb(190, 120, 248, 255));
+        DrawOrbitalRing(context, cx, cy, r * 1.28, 0.18, -sweep * 0.92 + 1.2, 0.55, Color.FromArgb(185, 110, 255, 161));
+        DrawOrbitalRing(context, cx, cy, r * 1.46, 0.14, sweep * 0.72 + 2.1, 1.0, Color.FromArgb(175, 166, 126, 255));
 
-        DrawPacketArc(context, cx, cy, r, TimeSeconds * 0.68, Color.FromArgb(165, 36, 215, 255));
-        DrawPacketArc(context, cx, cy, r, TimeSeconds * 0.9 + 2.1, Color.FromArgb(165, 142, 248, 255));
-        DrawPacketArc(context, cx, cy, r, -TimeSeconds * 0.78 + 1.4, Color.FromArgb(165, 110, 255, 161));
+        DrawPacketArc(context, cx, cy, r, sweep * 0.72 + 0.15, Color.FromArgb(165, 36, 215, 255));
+        DrawPacketArc(context, cx, cy, r, sweep * 0.85 + 2.1, Color.FromArgb(165, 142, 248, 255));
+        DrawPacketArc(context, cx, cy, r, -sweep * 0.64 + 1.4, Color.FromArgb(165, 110, 255, 161));
 
-        var beaconPulse = 0.55 + 0.45 * Math.Sin(TimeSeconds * 3.2);
-        var beaconCenter = new Point(cx + r * 0.24, cy - r * 0.18);
+        var beaconPulse = 0.55 + 0.45 * Math.Sin(t * 3.2 + 0.4);
+        var beaconDrift = 0.6 + 0.4 * Math.Sin(t * 1.1 + 0.2);
+        var beaconCenter = new Point(cx + r * (0.24 + 0.02 * Math.Sin(t * 0.8)), cy - r * (0.18 + 0.01 * Math.Cos(t * 0.9)));
         var beaconHalo = new SolidColorBrush(Color.FromArgb((byte)(70 + 70 * beaconPulse), 110, 255, 161));
         context.DrawEllipse(beaconHalo, null, beaconCenter, 12 + beaconPulse * 8, 12 + beaconPulse * 8);
 
-        var beaconBrush = new SolidColorBrush(Color.FromArgb((byte)(145 + 85 * beaconPulse), 110, 255, 161));
+        var beaconBrush = new SolidColorBrush(Color.FromArgb((byte)(145 + 85 * beaconPulse * beaconDrift), 110, 255, 161));
         context.DrawEllipse(beaconBrush, null, beaconCenter, 6 + beaconPulse * 6, 6 + beaconPulse * 6);
 
         var statusText = new FormattedText("HOME BEACON / ROUTE STABLE", System.Globalization.CultureInfo.InvariantCulture, FlowDirection.LeftToRight, Typeface.Default, 13, new SolidColorBrush(Color.FromRgb(217, 247, 255)));
