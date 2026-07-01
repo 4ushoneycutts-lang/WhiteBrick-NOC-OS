@@ -23,16 +23,36 @@ public sealed class HeroGlobeControl : AnimatedWidgetBase
         {
             GradientStops =
             {
-                new GradientStop(Color.FromArgb((byte)(110 + 30 * atmospherePulse), 36, 215, 255), 0),
-                new GradientStop(Color.FromArgb((byte)(44 + 16 * atmospherePulse), 36, 215, 255), 0.55),
+                new GradientStop(Color.FromArgb((byte)(90 + 40 * atmospherePulse), 36, 215, 255), 0),
+                new GradientStop(Color.FromArgb((byte)(36 + 18 * atmospherePulse), 36, 215, 255), 0.6),
                 new GradientStop(Color.FromArgb(0, 36, 215, 255), 1)
             }
         };
-        context.DrawEllipse(halo, null, new Point(cx, cy), r * 1.65, r * 1.65);
+        context.DrawEllipse(halo, null, new Point(cx, cy), r * 1.8, r * 1.8);
+
+        var globeFill = new RadialGradientBrush
+        {
+            GradientStops =
+            {
+                new GradientStop(Color.FromArgb(200, 58, 200, 225), 0),
+                new GradientStop(Color.FromArgb(160, 36, 115, 150), 0.6),
+                new GradientStop(Color.FromArgb(30, 8, 18, 26), 1)
+            }
+        };
+        context.DrawEllipse(globeFill, null, new Point(cx - r * 0.08, cy - r * 0.08), r, r);
 
         var outerPen = new Pen(new SolidColorBrush(Color.FromArgb(230, 36, 215, 255)), 2.2);
         var innerPen = new Pen(new SolidColorBrush(Color.FromArgb(135, 110, 255, 245)), 1.2);
         context.DrawEllipse(null, outerPen, new Point(cx, cy), r, r);
+
+        var edgeBreath = 0.5 + 0.28 * Math.Sin(t * 1.6 + 0.3);
+        for (int g = 0; g < 3; g++)
+        {
+            var width = 1.8 + g * 2.4;
+            var alpha = (byte)(18 * (1.0 / (g + 1)) * (0.8 + edgeBreath));
+            var pen = new Pen(new SolidColorBrush(Color.FromArgb(alpha, 36, 215, 255)), width);
+            context.DrawEllipse(null, pen, new Point(cx, cy), r + 1.2 + g * 2.2, r + 1.2 + g * 2.2);
+        }
 
         for (int i = -3; i <= 3; i++)
         {
@@ -49,6 +69,8 @@ public sealed class HeroGlobeControl : AnimatedWidgetBase
         }
 
         DrawContinents(context, cx, cy, r);
+        var undersideShade = new SolidColorBrush(Color.FromArgb(40, 0, 8, 16));
+        context.DrawEllipse(undersideShade, null, new Point(cx, cy + r * 0.18), r * 0.96, r * 0.78);
         DrawOrbitalRing(context, cx, cy, r * 1.12, 0.26, sweep * 1.18, 0.15, Color.FromArgb(190, 120, 248, 255));
         DrawOrbitalRing(context, cx, cy, r * 1.28, 0.18, -sweep * 0.92 + 1.2, 0.55, Color.FromArgb(185, 110, 255, 161));
         DrawOrbitalRing(context, cx, cy, r * 1.46, 0.14, sweep * 0.72 + 2.1, 1.0, Color.FromArgb(175, 166, 126, 255));
@@ -56,6 +78,57 @@ public sealed class HeroGlobeControl : AnimatedWidgetBase
         DrawPacketArc(context, cx, cy, r, sweep * 0.72 + 0.15, Color.FromArgb(165, 36, 215, 255));
         DrawPacketArc(context, cx, cy, r, sweep * 0.85 + 2.1, Color.FromArgb(165, 142, 248, 255));
         DrawPacketArc(context, cx, cy, r, -sweep * 0.64 + 1.4, Color.FromArgb(165, 110, 255, 161));
+
+        // Subtle network activity: faint connection arcs, occasional packets, pulsing nodes.
+        // Use multiple arcs with slightly different radii and speeds; timing uses varying frequencies
+        // to avoid strict repetition while remaining deterministic and low-cost.
+        var networkBaseColors = new[] { Color.FromArgb(120, 110, 255, 200), Color.FromArgb(100, 120, 220, 255), Color.FromArgb(90, 160, 200, 255) };
+        int netArcs = 4;
+        for (int ai = 0; ai < netArcs; ai++)
+        {
+            var nr = r * (1.02 + ai * 0.14);
+            var nvs = 0.58 + ai * 0.06;
+            var nSpeed = 0.42 + ai * 0.18;
+            var nPhase = sweep * (0.6 + ai * 0.2) * (ai % 2 == 0 ? 1 : -1);
+
+            var baseColor = networkBaseColors[ai % networkBaseColors.Length];
+            var glowPen = new Pen(new SolidColorBrush(Color.FromArgb(30, baseColor.R, baseColor.G, baseColor.B)), 5.0);
+            var thinPen = new Pen(new SolidColorBrush(Color.FromArgb(70, baseColor.R, baseColor.G, baseColor.B)), 1.0);
+
+            // draw faint segmented arc
+            int segs = 18;
+            for (int s = 0; s < segs; s++)
+            {
+                var a1 = nPhase + (s / (double)segs) * Math.PI * 2 * 0.7;
+                var a2 = nPhase + ((s + 1) / (double)segs) * Math.PI * 2 * 0.7;
+                var p1 = new Point(cx + Math.Cos(a1) * nr, cy + Math.Sin(a1) * nr * nvs);
+                var p2 = new Point(cx + Math.Cos(a2) * nr, cy + Math.Sin(a2) * nr * nvs);
+                context.DrawLine(glowPen, p1, p2);
+                context.DrawLine(thinPen, p1, p2);
+            }
+
+            // occasional moving packet: progress varies by time and arc index to avoid sync
+            var prog = (Math.Sin(TimeSeconds * (nSpeed * 0.9 + ai * 0.07) + ai * 1.3) + 1.0) * 0.5; // 0..1
+            var packetAngle = nPhase + prog * Math.PI * 2 * 0.7;
+            var px = cx + Math.Cos(packetAngle) * nr;
+            var py = cy + Math.Sin(packetAngle) * nr * nvs;
+            var packetGlow = new SolidColorBrush(Color.FromArgb((byte)(100 + 80 * prog), baseColor.R, baseColor.G, baseColor.B));
+            context.DrawEllipse(new SolidColorBrush(Color.FromArgb((byte)(180 * prog), 235, 255, 250)), null, new Point(px, py), 3.2, 3.2);
+            context.DrawEllipse(packetGlow, null, new Point(px, py), 6 + 2 * prog, 6 + 2 * prog);
+
+            // a few pulsing nodes along the arc
+            int nodes = 3;
+            for (int ni = 0; ni < nodes; ni++)
+            {
+                var npos = ni / (double)nodes;
+                var nangle = nPhase + npos * Math.PI * 2 * 0.7 + Math.Sin(TimeSeconds * (0.6 + ni * 0.2) + ai) * 0.18;
+                var nx = cx + Math.Cos(nangle) * nr;
+                var ny = cy + Math.Sin(nangle) * nr * nvs;
+                var pulse = 0.4 + 0.6 * Math.Abs(Math.Sin(TimeSeconds * (1.2 + ni * 0.3) + ai * 0.9 + ni));
+                var nodeBrush = new SolidColorBrush(Color.FromArgb((byte)(60 + 120 * pulse), baseColor.R, baseColor.G, baseColor.B));
+                context.DrawEllipse(nodeBrush, null, new Point(nx, ny), 2.0 + 1.6 * pulse, 2.0 + 1.6 * pulse);
+            }
+        }
 
         var beaconPulse = 0.55 + 0.45 * Math.Sin(t * 3.2 + 0.4);
         var beaconDrift = 0.6 + 0.4 * Math.Sin(t * 1.1 + 0.2);
