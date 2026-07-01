@@ -29,8 +29,8 @@
     <widgets:ParticleFieldControl/>
     <widgets:AmbientMoodOverlayControl Mode="{Binding OperatingMode}"/>
 
-    <Grid RowDefinitions="72,*,56" ColumnDefinitions="220,1.08*,1.72*,1.08*" Margin="18">
-      <Border Grid.Row="0" Grid.ColumnSpan="4" CornerRadius="18" Background="#D0101827" BorderBrush="#245B7D" BorderThickness="1" Padding="12,8">
+    <Grid RowDefinitions="72,*,56" ColumnDefinitions="360,1.6*,360" Margin="18">
+      <Border Grid.Row="0" Grid.ColumnSpan="3" CornerRadius="18" Background="#D0101827" BorderBrush="#245B7D" BorderThickness="1" Padding="12,8">
         <Grid RowDefinitions="*,8" ColumnDefinitions="160,*,260" VerticalAlignment="Center">
           <!-- Logo / Brand area -->
           <StackPanel Orientation="Horizontal" Spacing="10">
@@ -74,7 +74,7 @@
         </Grid>
       </Border>
 
-      <Border Grid.Row="1" Grid.Column="2" Height="34" VerticalAlignment="Top" Margin="6,8,6,0">
+      <Border Grid.Row="1" Grid.Column="1" Height="34" VerticalAlignment="Top" Margin="6,8,6,0">
         <widgets:AlertBannerControl Text="{Binding AlertBannerText}" Severity="{Binding AlertSeverity}"/>
       </Border>
 
@@ -178,38 +178,9 @@
         </StackPanel>
       </Border>
 
-      <Border Grid.Row="1" Grid.Column="1" Margin="0,18,12,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="12">
-        <StackPanel Spacing="10">
-          <Border CornerRadius="12" Background="#0A081018" BorderBrush="#245B7D" BorderThickness="1" Padding="10">
-            <StackPanel>
-              <TextBlock Text="NETWORK STATUS" FontSize="16" FontWeight="Bold" Foreground="#C8F6FF"/>
-              <StackPanel Spacing="6" Margin="0,8,0,0">
-                <widgets:InfrastructureCardControl Height="40" DeviceName="Internet" Status="ONLINE" Load="0.96"/>
-                <widgets:InfrastructureCardControl Height="40" DeviceName="Gateway" Status="ONLINE" Load="0.87"/>
-                <widgets:InfrastructureCardControl Height="40" DeviceName="WB-Core-01" Status="STAGED" Load="0.33"/>
-              </StackPanel>
-            </StackPanel>
-          </Border>
+      <!-- middle-left column removed to consolidate left monitor panels into column 0 -->
 
-          <Border CornerRadius="12" Background="#0A081018" BorderBrush="#1F6A8D" BorderThickness="1" Padding="10">
-            <TextBlock Text="DEVICES" FontSize="14" FontWeight="Bold" Foreground="#C8F6FF"/>
-          </Border>
-
-          <Border CornerRadius="12" Background="#0A081018" BorderBrush="#19B6D2" BorderThickness="1" Padding="10">
-            <TextBlock Text="POWER" FontSize="14" FontWeight="Bold" Foreground="#C8F6FF"/>
-          </Border>
-
-          <Border CornerRadius="12" Background="#0A081018" BorderBrush="#5B4CFF" BorderThickness="1" Padding="10">
-            <TextBlock Text="STORAGE" FontSize="14" FontWeight="Bold" Foreground="#C8F6FF"/>
-          </Border>
-
-          <Border CornerRadius="12" Background="#0A081018" BorderBrush="#2C3A55" BorderThickness="1" Padding="10">
-            <TextBlock Text="WHITE BRICK" FontSize="14" FontWeight="Bold" Foreground="#C8F6FF"/>
-          </Border>
-        </StackPanel>
-      </Border>
-
-      <Border Grid.Row="1" Grid.Column="2" Margin="6,18,6,0" CornerRadius="24" Background="#D006101F" BorderBrush="#19B6D2" BorderThickness="1" Padding="18">
+      <Border Grid.Row="1" Grid.Column="1" Margin="6,18,6,0" CornerRadius="24" Background="#D006101F" BorderBrush="#19B6D2" BorderThickness="1" Padding="18">
         <Grid RowDefinitions="*,130,Auto">
           <widgets:HeroGlobeControl/>
 
@@ -243,7 +214,7 @@
         </Grid>
       </Border>
 
-<Border Grid.Row="1" Grid.Column="3" Margin="12,18,0,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="12">
+<Border Grid.Row="1" Grid.Column="2" Margin="12,18,0,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="12">
   <Grid RowDefinitions="Auto,120,130,122,*,90,90" RowSpacing="8">
     <TextBlock Text="LIVE CONSOLE" FontSize="18" FontWeight="Bold" Foreground="#C8F6FF"/>
 
