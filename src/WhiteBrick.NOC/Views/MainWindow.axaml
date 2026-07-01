@@ -1,0 +1,153 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:widgets="clr-namespace:WhiteBrick.NOC.Widgets"
+        x:Class="WhiteBrick.NOC.Views.MainWindow"
+        Width="1600"
+        Height="900"
+        MinWidth="1200"
+        MinHeight="720"
+        Title="{Binding Title}"
+        Background="#050811">
+  <Grid>
+    <widgets:ParticleFieldControl/>
+    <widgets:AmbientMoodOverlayControl Mode="{Binding OperatingMode}"/>
+
+    <Grid RowDefinitions="72,*" ColumnDefinitions="1.08*,1.72*,1.08*" Margin="18">
+      <Border Grid.Row="0" Grid.ColumnSpan="3" CornerRadius="18" Background="#D0101827" BorderBrush="#245B7D" BorderThickness="1" Padding="18,10">
+        <Grid ColumnDefinitions="*,Auto">
+          <StackPanel>
+            <TextBlock Text="WHITE BRICK NOC OS" FontSize="28" FontWeight="Bold" Foreground="#D9F7FF"/>
+            <TextBlock Text="SPRINT 2 PACK 5.003 • TIMELINE • WEATHER SLOT • CAMERA WALL" FontSize="13" Foreground="#77C8E8"/>
+          </StackPanel>
+          <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+            <TextBlock Text="{Binding Time}" FontSize="28" FontWeight="Bold" Foreground="#8EF8FF"/>
+            <TextBlock Text="{Binding ProviderName}" FontSize="12" Foreground="#8899AA"/>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <Border Grid.Row="1" Grid.Column="1" Height="34" VerticalAlignment="Top" Margin="6,8,6,0">
+        <widgets:AlertBannerControl Text="{Binding AlertBannerText}" Severity="{Binding AlertSeverity}"/>
+      </Border>
+
+      <Border Grid.Row="1" Grid.Column="0" Margin="0,18,12,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="14">
+        <Grid RowDefinitions="Auto,Auto,*,Auto">
+          <TextBlock Text="INFRASTRUCTURE" FontSize="18" FontWeight="Bold" Foreground="#C8F6FF"/>
+          <StackPanel Grid.Row="1" Spacing="7" Margin="0,12,0,10">
+            <widgets:InfrastructureCardControl Height="44" DeviceName="Internet" Status="ONLINE" Load="0.96"/>
+            <widgets:InfrastructureCardControl Height="44" DeviceName="Gateway" Status="ONLINE" Load="0.87"/>
+            <widgets:InfrastructureCardControl Height="44" DeviceName="Honeycutt5" Status="ONLINE" Load="0.72"/>
+            <widgets:InfrastructureCardControl Height="44" DeviceName="Honeycuttt24" Status="ONLINE" Load="0.61"/>
+            <widgets:InfrastructureCardControl Height="44" DeviceName="WB-Core-01" Status="STAGED" Load="0.33"/>
+            <widgets:InfrastructureCardControl Height="44" DeviceName="My Book 01" Status="ONLINE" Load="0.82"/>
+            <widgets:InfrastructureCardControl Height="44" DeviceName="My Book 02" Status="ONLINE" Load="0.79"/>
+          </StackPanel>
+
+          <Border Grid.Row="2" CornerRadius="14" Background="#B0090C18" BorderBrush="#5B4CFF" BorderThickness="1" Padding="8">
+            <Grid RowDefinitions="*,*,*">
+              <widgets:HistoryGraphControl Values="{Binding HistoryValues}" Label="NETWORK SCORE"/>
+              <widgets:HistoryGraphControl Grid.Row="1" Values="{Binding LatencyValues}" Label="LATENCY"/>
+              <widgets:HistoryGraphControl Grid.Row="2" Values="{Binding CpuValues}" Label="CPU"/>
+            </Grid>
+          </Border>
+
+          <Grid Grid.Row="3" ColumnDefinitions="*,*" Margin="0,12,0,0">
+            <StackPanel>
+              <TextBlock Text="PACKETS / SEC" Foreground="#77C8E8"/>
+              <TextBlock Text="{Binding PacketRate}" Foreground="#8EF8FF" FontSize="24" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+              <TextBlock Text="HEALTH" Foreground="#77C8E8"/>
+              <TextBlock Text="NOMINAL" Foreground="#6EFFA1" FontSize="24" FontWeight="Bold"/>
+            </StackPanel>
+          </Grid>
+        </Grid>
+      </Border>
+
+      <Border Grid.Row="1" Grid.Column="1" Margin="6,18,6,0" CornerRadius="24" Background="#D006101F" BorderBrush="#19B6D2" BorderThickness="1" Padding="18">
+        <Grid RowDefinitions="*,130,Auto">
+          <widgets:HeroGlobeControl/>
+
+          <Grid Grid.Row="1" ColumnDefinitions="1.45*,*" Margin="0,8,0,0">
+            <Border CornerRadius="16" Background="#8A081020" BorderBrush="#245B7D" BorderThickness="1">
+              <widgets:PacketStreamControl/>
+            </Border>
+            <Border Grid.Column="1" Margin="10,0,0,0" CornerRadius="12" Background="#8A081020" BorderBrush="#245B7D" BorderThickness="1">
+              <widgets:CameraPreviewWallControl/>
+            </Border>
+          </Grid>
+
+          <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*" Margin="0,16,0,0">
+            <StackPanel>
+              <TextBlock Text="NETWORK SCORE" Foreground="#77C8E8"/>
+              <TextBlock Text="{Binding NetworkScore}" Foreground="#6EFFA1" FontSize="34" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+              <TextBlock Text="LATENCY" Foreground="#77C8E8"/>
+              <TextBlock Text="{Binding Latency}" Foreground="#8EF8FF" FontSize="28" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+              <TextBlock Text="DOWN Mbps" Foreground="#77C8E8"/>
+              <TextBlock Text="{Binding Download}" Foreground="#8EF8FF" FontSize="28" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Grid.Column="3">
+              <TextBlock Text="UP Mbps" Foreground="#77C8E8"/>
+              <TextBlock Text="{Binding Upload}" Foreground="#8EF8FF" FontSize="28" FontWeight="Bold"/>
+            </StackPanel>
+          </Grid>
+        </Grid>
+      </Border>
+
+<Border Grid.Row="1" Grid.Column="2" Margin="12,18,0,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="12">
+  <Grid RowDefinitions="Auto,120,130,122,*,130">
+    <TextBlock Text="OPERATIONS STACK" FontSize="18" FontWeight="Bold" Foreground="#C8F6FF"/>
+
+    <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="0,10,0,0">
+      <widgets:SystemMicroPanelControl Cpu="{Binding Cpu}" Memory="{Binding Memory}" Packets="{Binding PacketRate}" Mode="{Binding OperatingMode}"/>
+      <Grid Grid.Column="1" ColumnDefinitions="*,*">
+        <widgets:GaugeRingControl Value="32" Label="CPU"/>
+        <widgets:GaugeRingControl Grid.Column="1" Value="48" Label="MEM"/>
+      </Grid>
+    </Grid>
+
+    <Border Grid.Row="2" Margin="0,10,0,0" CornerRadius="10" Background="#B0090C18" BorderBrush="#245B7D" BorderThickness="1" Padding="0">
+      <widgets:WeatherPulseControl Temperature="{Binding WeatherTemperature}" Condition="{Binding WeatherCondition}" Wind="{Binding WeatherWind}"/>
+    </Border>
+
+    <Border Grid.Row="3" Margin="0,10,0,0" CornerRadius="10" Background="#B0090C18" BorderBrush="#24D7FF" BorderThickness="1" Padding="6">
+      <Grid RowDefinitions="Auto,*">
+        <TextBlock Text="RADAR / DEVICE SWEEP" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
+        <widgets:RadarControl Grid.Row="1" Margin="0,4,0,0"/>
+      </Grid>
+    </Border>
+
+    <Border Grid.Row="4" Margin="0,10,0,0" CornerRadius="10" Background="#D0050811" BorderBrush="#2C3A55" BorderThickness="1" Padding="8">
+      <Grid RowDefinitions="Auto,*">
+        <TextBlock Text="LIVE CONSOLE" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
+        <ListBox Grid.Row="1" ItemsSource="{Binding ConsoleLines}" Background="Transparent" BorderThickness="0" Foreground="#BDEEFF" FontSize="11"/>
+      </Grid>
+    </Border>
+
+    <Border Grid.Row="5" Margin="0,10,0,0" CornerRadius="10" Background="#B0090C18" BorderBrush="#5B4CFF" BorderThickness="1" Padding="0">
+      <widgets:TimelineStreamControl Events="{Binding TimelineEvents}"/>
+    </Border>
+  </Grid>
+</Border>
+
+    </Grid>
+
+    <Border HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Width="420"
+            Height="220"
+            Margin="0,96,24,0"
+            IsVisible="{Binding DeveloperOverlayVisible}"
+            CornerRadius="12"
+            Background="#00000000">
+      <widgets:DeveloperOverlayControl EngineVersion="{Binding EngineVersion}"
+                                       SceneNodes="{Binding SceneNodeCount}"
+                                       DisplayZones="{Binding DisplayZoneCount}"
+                                       Assets="{Binding RegisteredAssetCount}"/>
+    </Border>
+  </Grid>
+</Window>

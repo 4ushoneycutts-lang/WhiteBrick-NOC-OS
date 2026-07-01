@@ -1,0 +1,38 @@
+{
+  "appName": "White Brick NOC OS",
+  "displayName": "WB-NOC-01",
+  "targetResolution": "5760x1080",
+  "defaultMode": "simulated",
+  "fullscreenOnStart": false,
+  "theme": "WhiteBrick.Dark.Cinematic",
+  "devices": [
+    "Internet",
+    "Gateway",
+    "Honeycutt5",
+    "Honeycuttt24",
+    "WB-Core-01",
+    "My Book 01",
+    "My Book 02"
+  ],
+  "animation": {
+    "targetFps": 60,
+    "particleDensity": 260,
+    "glowIntensity": 1.0,
+    "radarSweepSeconds": 3.0
+  },
+  "telemetry": {
+    "provider": "FakeTelemetryProvider",
+    "updateHz": 2
+  },
+  "engine": {
+    "version": "2.5.001",
+    "worldWidth": 5760,
+    "worldHeight": 1080,
+    "displayZones": [
+      "LEFT / INFRASTRUCTURE",
+      "CENTER / HERO",
+      "RIGHT / OPERATIONS"
+    ],
+    "developerOverlayKey": "F12"
+  }
+}
