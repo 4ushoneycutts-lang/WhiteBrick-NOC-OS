@@ -8,12 +8,29 @@
         MinHeight="720"
         Title="{Binding Title}"
         Background="#050811">
+  <Window.Styles>
+    <Style Selector="ListBox#NavList ListBoxItem:selected">
+      <Setter Property="Background" Value="#163346" />
+      <Setter Property="Foreground" Value="#D9F7FF" />
+      <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+    <Style Selector="ListBox#NavList ListBoxItem:pointerover">
+      <Setter Property="Background" Value="#0F2A36" />
+      <Setter Property="Foreground" Value="#BFEFFF" />
+    </Style>
+    <Style Selector="ListBox#NavList">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="4" />
+    </Style>
+  </Window.Styles>
+
   <Grid>
     <widgets:ParticleFieldControl/>
     <widgets:AmbientMoodOverlayControl Mode="{Binding OperatingMode}"/>
 
-    <Grid RowDefinitions="72,*" ColumnDefinitions="1.08*,1.72*,1.08*" Margin="18">
-      <Border Grid.Row="0" Grid.ColumnSpan="3" CornerRadius="18" Background="#D0101827" BorderBrush="#245B7D" BorderThickness="1" Padding="18,10">
+    <Grid RowDefinitions="72,*" ColumnDefinitions="220,1.08*,1.72*,1.08*" Margin="18">
+      <Border Grid.Row="0" Grid.ColumnSpan="4" CornerRadius="18" Background="#D0101827" BorderBrush="#245B7D" BorderThickness="1" Padding="18,10">
         <Grid ColumnDefinitions="*,Auto">
           <StackPanel>
             <TextBlock Text="WHITE BRICK NOC OS" FontSize="28" FontWeight="Bold" Foreground="#D9F7FF"/>
@@ -26,11 +43,27 @@
         </Grid>
       </Border>
 
-      <Border Grid.Row="1" Grid.Column="1" Height="34" VerticalAlignment="Top" Margin="6,8,6,0">
+      <Border Grid.Row="1" Grid.Column="2" Height="34" VerticalAlignment="Top" Margin="6,8,6,0">
         <widgets:AlertBannerControl Text="{Binding AlertBannerText}" Severity="{Binding AlertSeverity}"/>
       </Border>
 
-      <Border Grid.Row="1" Grid.Column="0" Margin="0,18,12,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="14">
+      <!-- Left navigation rail -->
+      <Border Grid.Row="1" Grid.Column="0" Margin="0,18,12,0" CornerRadius="12" Background="#0F071017" BorderBrush="#213A50" BorderThickness="1" Padding="8">
+        <StackPanel Spacing="8">
+          <TextBlock Text="WHITE BRICK" FontSize="12" FontWeight="Bold" Foreground="#C8F6FF" Margin="6,4"/>
+          <ListBox Name="NavList" SelectedIndex="0">
+            <ListBoxItem>Dashboard</ListBoxItem>
+            <ListBoxItem>Network</ListBoxItem>
+            <ListBoxItem>Devices</ListBoxItem>
+            <ListBoxItem>Power</ListBoxItem>
+            <ListBoxItem>Alerts</ListBoxItem>
+            <ListBoxItem>Analytics</ListBoxItem>
+            <ListBoxItem>Settings</ListBoxItem>
+          </ListBox>
+        </StackPanel>
+      </Border>
+
+      <Border Grid.Row="1" Grid.Column="1" Margin="0,18,12,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="14">
         <Grid RowDefinitions="Auto,Auto,*,Auto">
           <TextBlock Text="INFRASTRUCTURE" FontSize="18" FontWeight="Bold" Foreground="#C8F6FF"/>
           <StackPanel Grid.Row="1" Spacing="7" Margin="0,12,0,10">
@@ -64,7 +97,7 @@
         </Grid>
       </Border>
 
-      <Border Grid.Row="1" Grid.Column="1" Margin="6,18,6,0" CornerRadius="24" Background="#D006101F" BorderBrush="#19B6D2" BorderThickness="1" Padding="18">
+      <Border Grid.Row="1" Grid.Column="2" Margin="6,18,6,0" CornerRadius="24" Background="#D006101F" BorderBrush="#19B6D2" BorderThickness="1" Padding="18">
         <Grid RowDefinitions="*,130,Auto">
           <widgets:HeroGlobeControl/>
 
@@ -98,7 +131,7 @@
         </Grid>
       </Border>
 
-<Border Grid.Row="1" Grid.Column="2" Margin="12,18,0,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="12">
+<Border Grid.Row="1" Grid.Column="3" Margin="12,18,0,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="12">
   <Grid RowDefinitions="Auto,120,130,122,*,130">
     <TextBlock Text="OPERATIONS STACK" FontSize="18" FontWeight="Bold" Foreground="#C8F6FF"/>
 
