@@ -2,6 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Media;
 
+
 namespace WhiteBrick.NOC.Widgets;
 
 public sealed class HeroGlobeRenderer
@@ -9,7 +10,9 @@ public sealed class HeroGlobeRenderer
     private readonly AtmosphereRenderer _atmosphere = new();
     private readonly GridRenderer _grid = new();
     private readonly NetworkRenderer _network = new();
+    private readonly TelemetryRenderer _telemetry = new();
     private readonly GlobeEffectsRenderer _effects = new();
+    private readonly HudRenderer _hud = new();
 
     public void Render(DrawingContext context, Rect bounds, double time)
     {
@@ -30,16 +33,10 @@ public sealed class HeroGlobeRenderer
         DrawContinents(context, cx, cy, r, time);
         DrawUndersideShade(context, cx, cy, r);
 
-_network.Render(
-    context,
-    cx,
-    cy,
-    r,
-    time);
-    
+        _telemetry.Render(context, cx, cy, r, time);
+        _network.Render(context, cx, cy, r, time);
         _effects.Render(context, cx, cy, r, time);
-
-        DrawStatusText(context, cx, cy, r);
+        _hud.Render(context, cx, cy, r, time);
     }
 
     private static void DrawGlobeBody(DrawingContext context, double cx, double cy, double r)
@@ -54,30 +51,27 @@ _network.Render(
             }
         };
 
+        context.DrawEllipse(globeFill, null, new Point(cx - r * 0.08, cy - r * 0.08), r, r);
+
         context.DrawEllipse(
-            globeFill,
             null,
-            new Point(cx - r * 0.08, cy - r * 0.08),
+            new Pen(new SolidColorBrush(Color.FromArgb(70, 36, 215, 255)), 6.0),
+            new Point(cx, cy),
+            r + 1.5,
+            r + 1.5);
+
+        context.DrawEllipse(
+            null,
+            new Pen(new SolidColorBrush(Color.FromArgb(235, 36, 215, 255)), 2.2),
+            new Point(cx, cy),
             r,
             r);
-
-        var rimGlow = new Pen(
-            new SolidColorBrush(Color.FromArgb(70, 36, 215, 255)),
-            6.0);
-
-        var outerPen = new Pen(
-            new SolidColorBrush(Color.FromArgb(235, 36, 215, 255)),
-            2.2);
-
-        context.DrawEllipse(null, rimGlow, new Point(cx, cy), r + 1.5, r + 1.5);
-        context.DrawEllipse(null, outerPen, new Point(cx, cy), r, r);
     }
 
     private static void DrawContinents(DrawingContext context, double cx, double cy, double r, double time)
     {
         var brush = new SolidColorBrush(Color.FromArgb(72, 110, 255, 161));
         var hotBrush = new SolidColorBrush(Color.FromArgb(42, 180, 255, 210));
-
         var shift = Math.Sin(time * 0.45) * r * 0.18;
 
         context.DrawEllipse(brush, null, new Point(cx - r * 0.34 + shift, cy - r * 0.16), r * 0.16, r * 0.08);
@@ -91,40 +85,11 @@ _network.Render(
 
     private static void DrawUndersideShade(DrawingContext context, double cx, double cy, double r)
     {
-        var undersideShade = new SolidColorBrush(Color.FromArgb(42, 0, 8, 16));
-
         context.DrawEllipse(
-            undersideShade,
+            new SolidColorBrush(Color.FromArgb(42, 0, 8, 16)),
             null,
             new Point(cx, cy + r * 0.18),
             r * 0.96,
             r * 0.78);
-    }
-
-    private static void DrawStatusText(DrawingContext context, double cx, double cy, double r)
-    {
-        var statusText = new FormattedText(
-            "HOME BEACON / ROUTE STABLE",
-            System.Globalization.CultureInfo.InvariantCulture,
-            FlowDirection.LeftToRight,
-            Typeface.Default,
-            13,
-            new SolidColorBrush(Color.FromRgb(217, 247, 255)));
-
-        context.DrawText(
-            statusText,
-            new Point(cx - statusText.Width / 2, cy + r + 24));
-
-        var subText = new FormattedText(
-            "WB-CORE • HONEYCUTT • WAN LINK",
-            System.Globalization.CultureInfo.InvariantCulture,
-            FlowDirection.LeftToRight,
-            Typeface.Default,
-            10,
-            new SolidColorBrush(Color.FromArgb(180, 119, 200, 232)));
-
-        context.DrawText(
-            subText,
-            new Point(cx - subText.Width / 2, cy + r + 44));
     }
 }
