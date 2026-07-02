@@ -5,6 +5,7 @@ namespace WhiteBrick.NOC.Widgets;
 
 public sealed class HeroGlobeControl : AnimatedWidgetBase
 {
+     private readonly HeroGlobeRenderer _renderer = new();
     public override void Render(DrawingContext context)
     {
         base.Render(context);
