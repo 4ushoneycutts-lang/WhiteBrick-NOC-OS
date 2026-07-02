@@ -1,6 +1,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using Avalonia.Threading;
 using WhiteBrick.NOC.Models;
 using WhiteBrick.NOC.Services;
@@ -11,8 +13,12 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 {
     private readonly NocRuntime _runtime;
     private readonly DispatcherTimer _timer;
+    private readonly NocEventService _events = new();
     private NocTelemetrySnapshot _snapshot;
     private int _tick;
+    private double? _liveCpu;
+    private double? _liveMemory;
+    private double? _liveLatency;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -55,12 +61,12 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public string Title => "White Brick NOC OS — Sprint 2 Pack 5.003";
     public string NetworkScore => $"{_snapshot.NetworkScore:0.0}";
-    public string Latency => $"{_snapshot.LatencyMs:0.0} ms";
+    public string Latency => $"{(_liveLatency ?? _snapshot.LatencyMs):0.0} ms";
     public string Download => $"{_snapshot.DownloadMbps:0.0}";
     public string Upload => $"{_snapshot.UploadMbps:0.0}";
     public string PacketRate => $"{_snapshot.PacketRate:0}";
-    public string Cpu => $"{_snapshot.CpuPercent:0.0}%";
-    public string Memory => $"{_snapshot.MemoryPercent:0.0}%";
+    public string Cpu => $"{(_liveCpu ?? _snapshot.CpuPercent):0.0}%";
+    public string Memory => $"{(_liveMemory ?? _snapshot.MemoryPercent):0.0}%";
     public string Time => _snapshot.Timestamp.ToString("HH:mm:ss");
     public string ProviderName => _runtime.TelemetryProvider.Name;
 
@@ -75,6 +81,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         {
             if (_developerOverlayVisible == value)
                 return;
+
             _developerOverlayVisible = value;
             OnPropertyChanged();
         }
@@ -110,13 +117,15 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private void Tick()
     {
         _snapshot = _runtime.TelemetryProvider.GetSnapshot();
+        LoadLocalProbeData();
+
         _runtime.Engine.Tick();
         _tick++;
         _weatherPhase += 0.08;
 
         Push(HistoryValues, _snapshot.NetworkScore, 110);
-        Push(LatencyValues, _snapshot.LatencyMs, 110);
-        Push(CpuValues, _snapshot.CpuPercent, 110);
+        Push(LatencyValues, _liveLatency ?? _snapshot.LatencyMs, 110);
+        Push(CpuValues, _liveCpu ?? _snapshot.CpuPercent, 110);
 
         OnPropertyChanged(nameof(NetworkScore));
         OnPropertyChanged(nameof(Latency));
@@ -144,7 +153,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(TimelineEvents));
 
         if (_tick % 5 == 0)
-            AddConsole("INFO", $"Telemetry: score {_snapshot.NetworkScore:0.0}, latency {_snapshot.LatencyMs:0.0} ms");
+            AddConsole("INFO", $"Telemetry: CPU {Cpu}, RAM {Memory}, latency {Latency}");
 
         if (_tick % 9 == 0)
             AddConsole("PACKET", $"Packet stream velocity adjusted: {_snapshot.PacketRate:0} packets/sec");
@@ -152,14 +161,14 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         if (_tick % 13 == 0)
         {
             AddConsole("NETWORK", "Route verified: Internet → Gateway → Honeycutt backbone");
-            AddTimeline("NETWORK", $"Route verified / latency {_snapshot.LatencyMs:0.0} ms");
+            AddTimeline("NETWORK", $"Route verified / latency {Latency}");
         }
 
         if (_tick % 17 == 0)
             AddTimeline("WEATHER", $"{WeatherCondition} / {WeatherTemperature} / {WeatherWind}");
 
         if (_tick % 23 == 0)
-            AddConsole("SUCCESS", "All simulated systems nominal");
+            AddConsole("SUCCESS", "All systems nominal");
 
         if (_tick % 31 == 0)
         {
@@ -174,27 +183,76 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             AddTimeline("WB", "WB-Core-01 telemetry slot waiting for hardware heartbeat");
     }
 
+    private void LoadLocalProbeData()
+    {
+        try
+        {
+            var path = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "data", "noc_status.json");
+            path = Path.GetFullPath(path);
+
+            if (!File.Exists(path))
+                return;
+
+            using var doc = JsonDocument.Parse(File.ReadAllText(path));
+            var root = doc.RootElement;
+
+            if (root.TryGetProperty("system", out var system))
+            {
+                if (system.TryGetProperty("cpuLoad", out var cpu) && cpu.ValueKind == JsonValueKind.Number)
+                    _liveCpu = cpu.GetDouble();
+
+                if (system.TryGetProperty("memory", out var memory))
+                {
+                    var total = memory.GetProperty("TotalVisibleMemorySize").GetDouble();
+                    var free = memory.GetProperty("FreePhysicalMemory").GetDouble();
+
+                    if (total > 0)
+                        _liveMemory = ((total - free) / total) * 100.0;
+                }
+            }
+
+            if (root.TryGetProperty("pings", out var pings) && pings.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var ping in pings.EnumerateArray())
+                {
+                    if (ping.TryGetProperty("avgMs", out var avg) && avg.ValueKind == JsonValueKind.Number)
+                    {
+                        _liveLatency = avg.GetDouble();
+                        break;
+                    }
+                }
+            }
+        }
+        catch
+        {
+            // Keep simulated telemetry if probe data is unavailable.
+        }
+    }
+
     private static void Push(ObservableCollection<double> list, double value, int max)
     {
         list.Add(value);
+
         while (list.Count > max)
             list.RemoveAt(0);
     }
 
-    private void AddConsole(string category, string message)
-    {
-        ConsoleLines.Insert(0, $"[{DateTime.Now:HH:mm:ss}] {category,-8} {message}");
-        while (ConsoleLines.Count > 38)
-            ConsoleLines.RemoveAt(ConsoleLines.Count - 1);
-    }
+    private void AddConsole(string category, string message, NocEventSeverity severity = NocEventSeverity.Info)
+{
+    _events.Publish(category, message, severity);
 
-    private void AddTimeline(string category, string message)
-    {
-        TimelineEvents.Insert(0, $"{DateTime.Now:HH:mm:ss}  {category,-7}  {message}");
-        while (TimelineEvents.Count > 14)
-            TimelineEvents.RemoveAt(TimelineEvents.Count - 1);
-    }
+    ConsoleLines.Insert(0, $"[{DateTime.Now:HH:mm:ss}] {category,-8} {message}");
 
-    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    while (ConsoleLines.Count > 38)
+        ConsoleLines.RemoveAt(ConsoleLines.Count - 1);
+}
+
+    private void AddTimeline(string category, string message, NocEventSeverity severity = NocEventSeverity.Info)
+{
+    _events.Publish(category, message, severity);
+
+    TimelineEvents.Insert(0, $"{DateTime.Now:HH:mm:ss}  {category,-7}  {message}");
+
+    while (TimelineEvents.Count > 14)
+        TimelineEvents.RemoveAt(TimelineEvents.Count - 1);
 }
