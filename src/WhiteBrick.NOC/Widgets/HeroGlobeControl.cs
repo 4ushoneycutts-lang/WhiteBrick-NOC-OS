@@ -13,7 +13,7 @@ public sealed class HeroGlobeControl : AnimatedWidgetBase
         var h = Bounds.Height;
         var cx = w / 2;
         var cy = h / 2;
-        var r = Math.Min(w, h) * 0.34;
+        var r = Math.Min(w, h) * 0.43;
 
         var t = TimeSeconds;
         var atmospherePulse = 0.55 + 0.22 * Math.Sin(t * 1.2 + 0.4);
@@ -186,8 +186,8 @@ public sealed class HeroGlobeControl : AnimatedWidgetBase
         // Living NOC overlay (Sprint 5): premium status panel with simulated values
         // Keep the overlay subtle and non-dominant; update values with low-frequency sinusoidal math.
         var overlayPad = 12.0;
-        var overlayW = Math.Min(240, Bounds.Width * 0.36);
-        var overlayH = 140.0;
+        var overlayW = Math.Min(240, Bounds.Width * 0.30);
+        var overlayH = 155.0;
         var overlayX = overlayPad;
         var overlayY = overlayPad;
 
