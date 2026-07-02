@@ -31,7 +31,7 @@
 
     <!-- Layout tuned for three-monitor (L / CENTER / R)  -->
     <Grid RowDefinitions="72,*,56" ColumnDefinitions="360,1.7*,360" Margin="20" ColumnSpacing="18">
-      <Border Grid.Row="0" Grid.ColumnSpan="3" CornerRadius="18" Background="#D0101827" BorderBrush="#245B7D" BorderThickness="1" Padding="12,8">
+      <Border x:Name="HeaderContainer" Grid.Row="0" Grid.ColumnSpan="3" CornerRadius="18" Background="#D0101827" BorderBrush="#245B7D" BorderThickness="1" Padding="12,8">
         <Grid RowDefinitions="*,8" ColumnDefinitions="160,*,260" VerticalAlignment="Center">
           <!-- Logo / Brand area -->
           <StackPanel Orientation="Horizontal" Spacing="10">
@@ -81,7 +81,7 @@
 
       <!-- Left operations column: denser enterprise-style status rows -->
       <!-- LEFT MONITOR: constrained to left column width and optimized spacing for distance readability -->
-      <Border Grid.Row="1" Grid.Column="0" Margin="0,22,16,0" CornerRadius="12" Background="#081018" BorderBrush="#123642" BorderThickness="1" Padding="16" MaxWidth="360">
+      <Border x:Name="LeftMonitorContainer" Grid.Row="1" Grid.Column="0" Margin="0,22,16,0" CornerRadius="12" Background="#081018" BorderBrush="#123642" BorderThickness="1" Padding="16" MaxWidth="360">
         <StackPanel Spacing="14" VerticalAlignment="Stretch">
           <TextBlock Text="OPERATIONS" FontSize="22" FontWeight="Bold" Foreground="#C8F6FF" Margin="6,6"/>
 
@@ -183,7 +183,7 @@
       <!-- middle-left column removed to consolidate left monitor panels into column 0 -->
 
       <!-- CENTER MONITOR: prioritize globe scale and whitespace; constrain upper panels to reduce footprint -->
-      <Border Grid.Row="1" Grid.Column="1" Margin="10,18,10,0" CornerRadius="24" Background="#D006101F" BorderBrush="#19B6D2" BorderThickness="1" Padding="20" MinWidth="900">
+      <Border x:Name="CenterMonitorContainer" Grid.Row="1" Grid.Column="1" Margin="10,18,10,0" CornerRadius="24" Background="#D006101F" BorderBrush="#19B6D2" BorderThickness="1" Padding="20" MinWidth="900">
         <Grid RowDefinitions="1.4*,140,Auto">
           <widgets:HeroGlobeControl MaxHeight="900" MinHeight="480" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,8"/>
 
@@ -218,7 +218,7 @@
       </Border>
 
       <!-- RIGHT MONITOR: remove overlaps, rebalance heights, increase spacing and ensure packet inspector readability -->
-<Border Grid.Row="1" Grid.Column="2" Margin="12,18,0,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="14" MaxWidth="360">
+<Border x:Name="RightMonitorContainer" Grid.Row="1" Grid.Column="2" Margin="12,18,0,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="14" MaxWidth="360">
   <Grid RowDefinitions="Auto,160,140,160,*,160,160" RowSpacing="14">
     <TextBlock Text="LIVE CONSOLE" FontSize="20" FontWeight="Bold" Foreground="#C8F6FF"/>
 
@@ -317,6 +317,21 @@
   </Grid>
 </Border>
 
+      <Border x:Name="BottomStatusBarContainer" Grid.Row="2" Grid.ColumnSpan="3" CornerRadius="14" Background="#0E0913" BorderBrush="#123642" BorderThickness="1" Padding="12,10" Margin="0,18,0,0">
+        <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+          <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+            <TextBlock Text="{Binding OperatingMode}" Foreground="#8EF8FF" FontSize="13" FontWeight="Bold"/>
+            <TextBlock Text="{Binding AlertSeverity}" Foreground="#BDEEFF" FontSize="13" Opacity="0.8"/>
+          </StackPanel>
+          <TextBlock Grid.Column="1" Text="{Binding AlertBannerText}" Foreground="#D9F7FF" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+          <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Time}" Foreground="#BDEEFF" FontSize="13"/>
+            <TextBlock Text="|" Foreground="#5B8AA3" FontSize="13" Opacity="0.65"/>
+            <TextBlock Text="Assets: " Foreground="#BDEEFF" FontSize="13"/>
+            <TextBlock Text="{Binding RegisteredAssetCount}" Foreground="#8EF8FF" FontSize="13"/>
+          </StackPanel>
+        </Grid>
+      </Border>
     </Grid>
 
     <Border HorizontalAlignment="Right"

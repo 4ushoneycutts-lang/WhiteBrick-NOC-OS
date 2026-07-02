@@ -18,18 +18,48 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            if (WhiteBrick.NOC.Utilities.DebugConfig.CalibrationModeEnabled)
+            // create a function to swap windows so we never instantiate both at once
+            void ShowCalibration()
             {
-                // Launch calibration window instead of the production dashboard
+                var old = desktop.MainWindow;
                 var calib = new Views.CalibrationWindow();
                 desktop.MainWindow = calib;
+                calib.Show();
+                old?.Close();
             }
-            else
+
+            void ShowDashboard()
             {
+                var old = desktop.MainWindow;
                 var runtime = NocRuntime.CreateDefault();
-                desktop.MainWindow = new MainWindow
+                var main = new MainWindow
                 {
                     DataContext = new MainWindowViewModel(runtime)
+                };
+                desktop.MainWindow = main;
+                main.Show();
+                old?.Close();
+            }
+
+            // TEMPORARILY force Calibration Mode for testing
+            ShowCalibration();
+
+            // Attach a global toggle: F10 switches modes at runtime
+            if (desktop.MainWindow != null)
+            {
+                desktop.MainWindow.KeyDown += (s, e) =>
+                {
+                    try
+                    {
+                        if (e.Key == Avalonia.Input.Key.F10)
+                        {
+                            if (desktop.MainWindow is Views.CalibrationWindow)
+                                ShowDashboard();
+                            else
+                                ShowCalibration();
+                        }
+                    }
+                    catch { }
                 };
             }
         }
