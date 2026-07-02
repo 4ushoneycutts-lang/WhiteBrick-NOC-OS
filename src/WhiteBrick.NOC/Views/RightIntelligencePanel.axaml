@@ -2,40 +2,96 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:widgets="clr-namespace:WhiteBrick.NOC.Widgets"
              x:Class="WhiteBrick.NOC.Views.RightIntelligencePanel">
-  <Border CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="14" MaxWidth="360">
-    <Grid RowDefinitions="Auto,160,140,160,*,160,160" RowSpacing="14">
-      <TextBlock Text="LIVE CONSOLE" FontSize="20" FontWeight="Bold" Foreground="#C8F6FF"/>
 
-      <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="0,10,0,0" ColumnSpacing="10">
-        <widgets:SystemMicroPanelControl Cpu="{Binding Cpu}" Memory="{Binding Memory}" Packets="{Binding PacketRate}" Mode="{Binding OperatingMode}"/>
-        <Grid Grid.Column="1" ColumnDefinitions="*,*" ColumnSpacing="10">
-          <widgets:GaugeRingControl Value="32" Label="CPU"/>
-          <widgets:GaugeRingControl Grid.Column="1" Value="48" Label="MEM"/>
+  <Border CornerRadius="20"
+          Background="#D00A1020"
+          BorderBrush="#1F6A8D"
+          BorderThickness="1"
+          Padding="14"
+          MaxWidth="360">
+
+    <Grid RowDefinitions="Auto,150,130,140,*,145,145"
+          RowSpacing="12">
+
+      <TextBlock Text="LIVE INTELLIGENCE"
+                 FontSize="20"
+                 FontWeight="Bold"
+                 Foreground="#C8F6FF"/>
+
+      <Grid Grid.Row="1"
+            ColumnDefinitions="*,*"
+            Margin="0,8,0,0"
+            ColumnSpacing="10">
+        <widgets:SystemMicroPanelControl Cpu="{Binding Cpu}"
+                                         Memory="{Binding Memory}"
+                                         Packets="{Binding PacketRate}"
+                                         Mode="{Binding OperatingMode}"/>
+
+        <Grid Grid.Column="1"
+              ColumnDefinitions="*,*"
+              ColumnSpacing="8">
+          <widgets:GaugeRingControl Value="{Binding Cpu}" Label="CPU"/>
+          <widgets:GaugeRingControl Grid.Column="1" Value="{Binding Memory}" Label="MEM"/>
         </Grid>
       </Grid>
 
-      <Border Grid.Row="2" CornerRadius="10" Background="#0A081018" BorderBrush="#245B7D" BorderThickness="1" Padding="12" MinHeight="120">
+      <Border Grid.Row="2"
+              CornerRadius="10"
+              Background="#0A081018"
+              BorderBrush="#245B7D"
+              BorderThickness="1"
+              Padding="10">
         <StackPanel>
-          <TextBlock Text="WEATHER" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
-          <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+          <TextBlock Text="WEATHER"
+                     Foreground="#BDEEFF"
+                     FontSize="12"
+                     FontWeight="Bold"/>
+
+          <Grid Margin="0,8,0,0"
+                ColumnDefinitions="*,Auto">
             <StackPanel>
-              <TextBlock Text="Ashland, VA" Foreground="#EAFBFF" FontWeight="Bold"/>
-              <TextBlock Text="Condition: Clear" Foreground="#BDEEFF" FontSize="12"/>
-              <TextBlock Text="Temperature: 72 °F" Foreground="#8EF8FF" FontSize="12"/>
+              <TextBlock Text="Ashland, VA"
+                         Foreground="#EAFBFF"
+                         FontWeight="Bold"/>
+              <TextBlock Text="{Binding WeatherCondition}"
+                         Foreground="#BDEEFF"
+                         FontSize="12"/>
+              <TextBlock Text="{Binding WeatherTemperature}"
+                         Foreground="#8EF8FF"
+                         FontSize="20"
+                         FontWeight="Bold"/>
             </StackPanel>
-            <StackPanel Margin="18,0,0,0">
-              <TextBlock Text="Wind: 6 mph NW" Foreground="#BDEEFF" FontSize="12"/>
-              <TextBlock Text="Humidity: 54%" Foreground="#BDEEFF" FontSize="12"/>
+
+            <StackPanel Grid.Column="1"
+                        HorizontalAlignment="Right">
+              <TextBlock Text="{Binding WeatherWind}"
+                         Foreground="#BDEEFF"
+                         FontSize="12"/>
+              <TextBlock Text="Provider staged"
+                         Foreground="#8899AA"
+                         FontSize="11"/>
             </StackPanel>
-          </StackPanel>
+          </Grid>
         </StackPanel>
       </Border>
 
-      <Border Grid.Row="3" CornerRadius="10" Background="#0A081018" BorderBrush="#24D7FF" BorderThickness="1" Padding="12" MinHeight="140">
+      <Border Grid.Row="3"
+              CornerRadius="10"
+              Background="#0A081018"
+              BorderBrush="#24D7FF"
+              BorderThickness="1"
+              Padding="10">
         <Grid RowDefinitions="Auto,*">
-          <TextBlock Text="NETWORK RADAR" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
-          <Grid Grid.Row="1" Margin="0,6,0,0">
-            <widgets:RadarControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+          <TextBlock Text="NETWORK RADAR"
+                     Foreground="#BDEEFF"
+                     FontSize="12"
+                     FontWeight="Bold"/>
+
+          <Grid Grid.Row="1"
+                Margin="0,6,0,0">
+            <widgets:RadarControl HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"/>
+
             <Canvas IsHitTestVisible="False">
               <Ellipse Width="6" Height="6" Fill="#8EF8FF" Canvas.Left="48" Canvas.Top="24" Opacity="0.9"/>
               <Ellipse Width="6" Height="6" Fill="#6EFFA1" Canvas.Left="88" Canvas.Top="44" Opacity="0.9"/>
@@ -45,58 +101,117 @@
         </Grid>
       </Border>
 
-      <Border Grid.Row="4" CornerRadius="10" Background="#0A081018" BorderBrush="#2C3A55" BorderThickness="1" Padding="12" MinHeight="140">
-        <StackPanel>
-          <TextBlock Text="LIVE CONSOLE" Foreground="#BDEEFF" FontSize="16" FontWeight="Bold"/>
-          <StackPanel Margin="0,10,0,0" Spacing="8">
-            <TextBlock Text="[12:03:21] INFO  System initialized" Foreground="#BDEEFF" FontSize="14"/>
-            <TextBlock Text="[12:05:04] OK    WAN link stable" Foreground="#6EFFA1" FontSize="14"/>
-            <TextBlock Text="[12:08:12] WARN  Packet loss detected" Foreground="#FFD28A" FontSize="14"/>
-            <TextBlock Text="[12:10:01] INFO  Backup started" Foreground="#BDEEFF" FontSize="14"/>
-          </StackPanel>
-        </StackPanel>
+      <Border Grid.Row="4"
+              CornerRadius="10"
+              Background="#0A081018"
+              BorderBrush="#2C3A55"
+              BorderThickness="1"
+              Padding="10"
+              ClipToBounds="True">
+        <Grid RowDefinitions="Auto,*">
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Text="LIVE CONSOLE"
+                       Foreground="#BDEEFF"
+                       FontSize="15"
+                       FontWeight="Bold"/>
+            <TextBlock Grid.Column="1"
+                       Text="EVENT STREAM"
+                       Foreground="#6EFFA1"
+                       FontSize="10"
+                       VerticalAlignment="Center"/>
+          </Grid>
+
+          <ScrollViewer Grid.Row="1"
+                        Margin="0,8,0,0"
+                        HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Disabled">
+            <ItemsControl ItemsSource="{Binding ConsoleLines}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding}"
+                             Foreground="#BDEEFF"
+                             FontSize="12"
+                             FontFamily="Consolas"
+                             TextWrapping="NoWrap"
+                             Margin="0,0,0,5"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </ScrollViewer>
+        </Grid>
       </Border>
 
-      <Border Grid.Row="5" CornerRadius="10" Background="#0A081018" BorderBrush="#5B4CFF" BorderThickness="1" Padding="10">
+      <Border Grid.Row="5"
+              CornerRadius="10"
+              Background="#0A081018"
+              BorderBrush="#5B4CFF"
+              BorderThickness="1"
+              Padding="10">
         <StackPanel>
-          <TextBlock Text="CAMERAS" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
+          <TextBlock Text="CAMERAS"
+                     Foreground="#BDEEFF"
+                     FontSize="12"
+                     FontWeight="Bold"/>
+
           <StackPanel Margin="0,8,0,0" Spacing="6">
-            <Grid ColumnDefinitions="18,*,Auto"><Ellipse Width="10" Height="10" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Front Door" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1"/></Grid>
-            <Grid ColumnDefinitions="18,*,Auto"><Ellipse Width="10" Height="10" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Garage" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1"/></Grid>
-            <Grid ColumnDefinitions="18,*,Auto"><Ellipse Width="10" Height="10" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Driveway" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="OFFLINE" Foreground="#8899AA"/></Grid>
-            <Grid ColumnDefinitions="18,*,Auto"><Ellipse Width="10" Height="10" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Shop" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1"/></Grid>
+            <Grid ColumnDefinitions="18,*,Auto">
+              <Ellipse Width="10" Height="10" Fill="#6EFFA1"/>
+              <TextBlock Grid.Column="1" Text="Ring Front" Foreground="#BDEEFF" Margin="8,0"/>
+              <TextBlock Grid.Column="2" Text="LIVE" Foreground="#6EFFA1"/>
+            </Grid>
+
+            <Grid ColumnDefinitions="18,*,Auto">
+              <Ellipse Width="10" Height="10" Fill="#6EFFA1"/>
+              <TextBlock Grid.Column="1" Text="Driveway" Foreground="#BDEEFF" Margin="8,0"/>
+              <TextBlock Grid.Column="2" Text="LIVE" Foreground="#6EFFA1"/>
+            </Grid>
+
+            <Grid ColumnDefinitions="18,*,Auto">
+              <Ellipse Width="10" Height="10" Fill="#FFD28A"/>
+              <TextBlock Grid.Column="1" Text="Office" Foreground="#BDEEFF" Margin="8,0"/>
+              <TextBlock Grid.Column="2" Text="RECORDING" Foreground="#FFD28A"/>
+            </Grid>
+
+            <Grid ColumnDefinitions="18,*,Auto">
+              <Ellipse Width="10" Height="10" Fill="#8899AA"/>
+              <TextBlock Grid.Column="1" Text="Garage" Foreground="#BDEEFF" Margin="8,0"/>
+              <TextBlock Grid.Column="2" Text="OFFLINE" Foreground="#8899AA"/>
+            </Grid>
           </StackPanel>
         </StackPanel>
       </Border>
 
-      <Border Grid.Row="6" CornerRadius="10" Background="#0A081018" BorderBrush="#1F6A8D" BorderThickness="1" Padding="12" MinHeight="160">
+      <Border Grid.Row="6"
+              CornerRadius="10"
+              Background="#0A081018"
+              BorderBrush="#1F6A8D"
+              BorderThickness="1"
+              Padding="10">
         <StackPanel>
-          <TextBlock Text="PACKET INSPECTOR" Foreground="#BDEEFF" FontSize="14" FontWeight="Bold"/>
-          <Grid Margin="0,8,0,0">
-            <Grid ColumnDefinitions="*,*,*,Auto,Auto">
-              <TextBlock Text="Protocol" Foreground="#89D7FF" FontSize="12"/>
-              <TextBlock Grid.Column="1" Text="Source" Foreground="#89D7FF" FontSize="12"/>
-              <TextBlock Grid.Column="2" Text="Destination" Foreground="#89D7FF" FontSize="12"/>
-              <TextBlock Grid.Column="3" Text="Rate" Foreground="#89D7FF" FontSize="12"/>
-              <TextBlock Grid.Column="4" Text="Status" Foreground="#89D7FF" FontSize="12"/>
-            </Grid>
-            <Grid Margin="0,6,0,0" ColumnDefinitions="*,*,*,Auto,Auto">
-              <TextBlock Text="TCP" FontSize="12"/>
-              <TextBlock Grid.Column="1" Text="10.1.8.24" FontSize="12"/>
-              <TextBlock Grid.Column="2" Text="192.168.1.12" FontSize="12"/>
-              <TextBlock Grid.Column="3" Text="12 pk/s" FontSize="12"/>
-              <TextBlock Grid.Column="4" Text="OK" Foreground="#6EFFA1" FontSize="12"/>
-            </Grid>
-            <Grid Margin="0,4,0,0" ColumnDefinitions="*,*,*,Auto,Auto">
-              <TextBlock Text="UDP" FontSize="12"/>
-              <TextBlock Grid.Column="1" Text="10.1.8.45" FontSize="12"/>
-              <TextBlock Grid.Column="2" Text="8.8.8.8" FontSize="12"/>
-              <TextBlock Grid.Column="3" Text="3 pk/s" FontSize="12"/>
-              <TextBlock Grid.Column="4" Text="WARN" Foreground="#FFD28A" FontSize="12"/>
-            </Grid>
+          <TextBlock Text="PACKET INSPECTOR"
+                     Foreground="#BDEEFF"
+                     FontSize="14"
+                     FontWeight="Bold"/>
+
+          <Grid Margin="0,8,0,0"
+                RowDefinitions="Auto,Auto,Auto"
+                ColumnDefinitions="*,*,Auto"
+                RowSpacing="5">
+            <TextBlock Text="TYPE" Foreground="#89D7FF" FontSize="11"/>
+            <TextBlock Grid.Column="1" Text="ROUTE" Foreground="#89D7FF" FontSize="11"/>
+            <TextBlock Grid.Column="2" Text="STATUS" Foreground="#89D7FF" FontSize="11"/>
+
+            <TextBlock Grid.Row="1" Text="ICMP" Foreground="#BDEEFF" FontSize="12"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="WAN → CORE" Foreground="#BDEEFF" FontSize="12"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Latency}" Foreground="#6EFFA1" FontSize="12"/>
+
+            <TextBlock Grid.Row="2" Text="TCP" Foreground="#BDEEFF" FontSize="12"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="LAN → NOC" Foreground="#BDEEFF" FontSize="12"/>
+            <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding PacketRate}" Foreground="#8EF8FF" FontSize="12"/>
           </Grid>
         </StackPanel>
       </Border>
+
     </Grid>
   </Border>
 </UserControl>
