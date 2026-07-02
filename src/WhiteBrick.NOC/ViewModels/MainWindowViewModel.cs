@@ -14,11 +14,14 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private readonly NocRuntime _runtime;
     private readonly DispatcherTimer _timer;
     private readonly NocEventService _events = new();
+
     private NocTelemetrySnapshot _snapshot;
     private int _tick;
     private double? _liveCpu;
     private double? _liveMemory;
     private double? _liveLatency;
+    private bool _developerOverlayVisible;
+    private double _weatherPhase;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -27,9 +30,6 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public ObservableCollection<double> HistoryValues { get; } = new();
     public ObservableCollection<double> LatencyValues { get; } = new();
     public ObservableCollection<double> CpuValues { get; } = new();
-
-    private bool _developerOverlayVisible;
-    private double _weatherPhase;
 
     public MainWindowViewModel(NocRuntime runtime)
     {
@@ -43,10 +43,11 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             CpuValues.Add(28 + Math.Sin(i * 0.21) * 10);
         }
 
-        AddConsole("SYSTEM", "WHITE BRICK NOC OS SPRINT 2 PACK 5.003 ONLINE");
-        AddConsole("ENGINE", "Timeline, weather slot, and camera wall framework loaded");
+        AddConsole("SYSTEM", "WHITE BRICK NOC OS SPRINT 3 ONLINE", NocEventSeverity.Success);
+        AddConsole("ENGINE", "Event pipeline initialized", NocEventSeverity.Success);
+        AddConsole("PROBE", "Local telemetry probe connected", NocEventSeverity.Success);
         AddConsole("NETWORK", "Honeycutt network route established");
-        AddConsole("WB", "WB-Core-01 remains staged for Sprint 4 hardware telemetry");
+        AddConsole("WB", "WB-Core-01 reserved for Sprint 4 hardware telemetry", NocEventSeverity.Warning);
 
         AddTimeline("SYSTEM", "NOC OS boot sequence complete");
         AddTimeline("ENGINE", "Scene graph and mood engine stable");
@@ -59,7 +60,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         _timer.Start();
     }
 
-    public string Title => "White Brick NOC OS — Sprint 2 Pack 5.003";
+    public string Title => "White Brick NOC OS — Sprint 3";
     public string NetworkScore => $"{_snapshot.NetworkScore:0.0}";
     public string Latency => $"{(_liveLatency ?? _snapshot.LatencyMs):0.0} ms";
     public string Download => $"{_snapshot.DownloadMbps:0.0}";
@@ -102,6 +103,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         _runtime.OperatingModes.CycleMode();
         AddConsole("MODE", $"Operating mode changed to {_runtime.OperatingModes.CurrentModeName}");
         AddTimeline("MODE", $"Operator mode → {_runtime.OperatingModes.CurrentModeName}");
+
         OnPropertyChanged(nameof(OperatingMode));
         OnPropertyChanged(nameof(AlertBannerText));
         OnPropertyChanged(nameof(AlertSeverity));
@@ -127,48 +129,25 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         Push(LatencyValues, _liveLatency ?? _snapshot.LatencyMs, 110);
         Push(CpuValues, _liveCpu ?? _snapshot.CpuPercent, 110);
 
-        OnPropertyChanged(nameof(NetworkScore));
-        OnPropertyChanged(nameof(Latency));
-        OnPropertyChanged(nameof(Download));
-        OnPropertyChanged(nameof(Upload));
-        OnPropertyChanged(nameof(PacketRate));
-        OnPropertyChanged(nameof(Cpu));
-        OnPropertyChanged(nameof(Memory));
-        OnPropertyChanged(nameof(Time));
-        OnPropertyChanged(nameof(ProviderName));
-        OnPropertyChanged(nameof(WeatherTemperature));
-        OnPropertyChanged(nameof(WeatherCondition));
-        OnPropertyChanged(nameof(WeatherWind));
-        OnPropertyChanged(nameof(EngineVersion));
-        OnPropertyChanged(nameof(SceneNodeCount));
-        OnPropertyChanged(nameof(DisplayZoneCount));
-        OnPropertyChanged(nameof(RegisteredAssetCount));
-        OnPropertyChanged(nameof(RegisteredWidgetCount));
-        OnPropertyChanged(nameof(OperatingMode));
-        OnPropertyChanged(nameof(AlertBannerText));
-        OnPropertyChanged(nameof(AlertSeverity));
-        OnPropertyChanged(nameof(HistoryValues));
-        OnPropertyChanged(nameof(LatencyValues));
-        OnPropertyChanged(nameof(CpuValues));
-        OnPropertyChanged(nameof(TimelineEvents));
+        NotifyDashboard();
 
         if (_tick % 5 == 0)
-            AddConsole("INFO", $"Telemetry: CPU {Cpu}, RAM {Memory}, latency {Latency}");
+            AddConsole("PROBE", $"CPU {Cpu} / RAM {Memory} / latency {Latency}");
 
         if (_tick % 9 == 0)
             AddConsole("PACKET", $"Packet stream velocity adjusted: {_snapshot.PacketRate:0} packets/sec");
 
         if (_tick % 13 == 0)
         {
-            AddConsole("NETWORK", "Route verified: Internet → Gateway → Honeycutt backbone");
-            AddTimeline("NETWORK", $"Route verified / latency {Latency}");
+            AddConsole("NETWORK", "Route verified: Internet → Gateway → Honeycutt backbone", NocEventSeverity.Success);
+            AddTimeline("NETWORK", $"Route verified / latency {Latency}", NocEventSeverity.Success);
         }
 
         if (_tick % 17 == 0)
             AddTimeline("WEATHER", $"{WeatherCondition} / {WeatherTemperature} / {WeatherWind}");
 
         if (_tick % 23 == 0)
-            AddConsole("SUCCESS", "All systems nominal");
+            AddConsole("SUCCESS", "All systems nominal", NocEventSeverity.Success);
 
         if (_tick % 31 == 0)
         {
@@ -180,7 +159,14 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             AddConsole("MODE", $"Room state synchronized: {_runtime.OperatingModes.CurrentModeName}");
 
         if (_tick % 59 == 0)
-            AddTimeline("WB", "WB-Core-01 telemetry slot waiting for hardware heartbeat");
+            AddTimeline("WB", "WB-Core-01 telemetry slot waiting for hardware heartbeat", NocEventSeverity.Warning);
+
+        // FUTURE SPRINT 4 EVENT SOURCES:
+        // UPS probe -> AddConsole("UPS", "Battery 100%", NocEventSeverity.Success);
+        // NAS probe -> AddConsole("NAS", "Storage array online", NocEventSeverity.Success);
+        // Camera probe -> AddConsole("CAMERA", "Ring Front live", NocEventSeverity.Success);
+        // Home Assistant -> AddConsole("HOME", "Automation heartbeat received");
+        // White Brick hardware -> AddConsole("WB", "CAN node heartbeat received", NocEventSeverity.Success);
     }
 
     private void LoadLocalProbeData()
@@ -225,8 +211,36 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         }
         catch
         {
-            // Keep simulated telemetry if probe data is unavailable.
+            AddConsole("PROBE", "Local probe unavailable; fallback telemetry active", NocEventSeverity.Warning);
         }
+    }
+
+    private void NotifyDashboard()
+    {
+        OnPropertyChanged(nameof(NetworkScore));
+        OnPropertyChanged(nameof(Latency));
+        OnPropertyChanged(nameof(Download));
+        OnPropertyChanged(nameof(Upload));
+        OnPropertyChanged(nameof(PacketRate));
+        OnPropertyChanged(nameof(Cpu));
+        OnPropertyChanged(nameof(Memory));
+        OnPropertyChanged(nameof(Time));
+        OnPropertyChanged(nameof(ProviderName));
+        OnPropertyChanged(nameof(WeatherTemperature));
+        OnPropertyChanged(nameof(WeatherCondition));
+        OnPropertyChanged(nameof(WeatherWind));
+        OnPropertyChanged(nameof(EngineVersion));
+        OnPropertyChanged(nameof(SceneNodeCount));
+        OnPropertyChanged(nameof(DisplayZoneCount));
+        OnPropertyChanged(nameof(RegisteredAssetCount));
+        OnPropertyChanged(nameof(RegisteredWidgetCount));
+        OnPropertyChanged(nameof(OperatingMode));
+        OnPropertyChanged(nameof(AlertBannerText));
+        OnPropertyChanged(nameof(AlertSeverity));
+        OnPropertyChanged(nameof(HistoryValues));
+        OnPropertyChanged(nameof(LatencyValues));
+        OnPropertyChanged(nameof(CpuValues));
+        OnPropertyChanged(nameof(TimelineEvents));
     }
 
     private static void Push(ObservableCollection<double> list, double value, int max)
@@ -238,21 +252,25 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     }
 
     private void AddConsole(string category, string message, NocEventSeverity severity = NocEventSeverity.Info)
-{
-    _events.Publish(category, message, severity);
+    {
+        _events.Publish(category, message, severity);
 
-    ConsoleLines.Insert(0, $"[{DateTime.Now:HH:mm:ss}] {category,-8} {message}");
+        ConsoleLines.Insert(0, $"[{DateTime.Now:HH:mm:ss}] {category,-8} {message}");
 
-    while (ConsoleLines.Count > 38)
-        ConsoleLines.RemoveAt(ConsoleLines.Count - 1);
-}
+        while (ConsoleLines.Count > 38)
+            ConsoleLines.RemoveAt(ConsoleLines.Count - 1);
+    }
 
     private void AddTimeline(string category, string message, NocEventSeverity severity = NocEventSeverity.Info)
-{
-    _events.Publish(category, message, severity);
+    {
+        _events.Publish(category, message, severity);
 
-    TimelineEvents.Insert(0, $"{DateTime.Now:HH:mm:ss}  {category,-7}  {message}");
+        TimelineEvents.Insert(0, $"{DateTime.Now:HH:mm:ss}  {category,-7}  {message}");
 
-    while (TimelineEvents.Count > 14)
-        TimelineEvents.RemoveAt(TimelineEvents.Count - 1);
+        while (TimelineEvents.Count > 14)
+            TimelineEvents.RemoveAt(TimelineEvents.Count - 1);
+    }
+
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
