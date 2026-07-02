@@ -42,7 +42,7 @@ public partial class App : Application
             }
 
             // TEMPORARILY force Calibration Mode for testing
-            ShowCalibration();
+            ShowDashboard();
 
             // Attach a global toggle: F10 switches modes at runtime
             if (desktop.MainWindow != null)

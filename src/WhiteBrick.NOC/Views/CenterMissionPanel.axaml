@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:widgets="clr-namespace:WhiteBrick.NOC.Widgets"
+             x:Class="WhiteBrick.NOC.Views.CenterMissionPanel">
+  <Border CornerRadius="24" Background="#D006101F" BorderBrush="#19B6D2" BorderThickness="1" Padding="20" MinWidth="900">
+    <Grid RowDefinitions="Auto,1.4*,140,Auto" RowSpacing="12">
+      <Border Grid.Row="0" Height="34" Margin="0,0,0,6">
+        <widgets:AlertBannerControl Text="{Binding AlertBannerText}" Severity="{Binding AlertSeverity}"/>
+      </Border>
+
+      <widgets:HeroGlobeControl Grid.Row="1" MaxHeight="900" MinHeight="480" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,8"/>
+
+      <Grid Grid.Row="2" ColumnDefinitions="1.8*,*" Margin="0,6,0,0" ColumnSpacing="10">
+        <Border CornerRadius="16" Background="#8A081020" BorderBrush="#245B7D" BorderThickness="1">
+          <widgets:PacketStreamControl MaxHeight="120"/>
+        </Border>
+        <Border Grid.Column="1" CornerRadius="12" Background="#8A081020" BorderBrush="#245B7D" BorderThickness="1">
+          <widgets:CameraPreviewWallControl/>
+        </Border>
+      </Grid>
+
+      <Grid Grid.Row="3" ColumnDefinitions="*,*,*,*" Margin="0,12,0,0" ColumnSpacing="12">
+        <StackPanel>
+          <TextBlock Text="NETWORK SCORE" Foreground="#77C8E8"/>
+          <TextBlock Text="{Binding NetworkScore}" Foreground="#6EFFA1" FontSize="38" FontWeight="Bold"/>
+        </StackPanel>
+        <StackPanel>
+          <TextBlock Text="LATENCY" Foreground="#77C8E8"/>
+          <TextBlock Text="{Binding Latency}" Foreground="#8EF8FF" FontSize="30" FontWeight="Bold"/>
+        </StackPanel>
+        <StackPanel>
+          <TextBlock Text="DOWN Mbps" Foreground="#77C8E8"/>
+          <TextBlock Text="{Binding Download}" Foreground="#8EF8FF" FontSize="30" FontWeight="Bold"/>
+        </StackPanel>
+        <StackPanel>
+          <TextBlock Text="UP Mbps" Foreground="#77C8E8"/>
+          <TextBlock Text="{Binding Upload}" Foreground="#8EF8FF" FontSize="30" FontWeight="Bold"/>
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Border>
+</UserControl>

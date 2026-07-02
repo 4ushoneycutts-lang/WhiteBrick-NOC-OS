@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:widgets="clr-namespace:WhiteBrick.NOC.Widgets"
+        xmlns:views="clr-namespace:WhiteBrick.NOC.Views"
         x:Class="WhiteBrick.NOC.Views.MainWindow"
         Width="1600"
         Height="900"
@@ -8,344 +9,117 @@
         MinHeight="720"
         Title="{Binding Title}"
         Background="#050811">
-  <Window.Styles>
-    <Style Selector="ListBox#NavList ListBoxItem:selected">
-      <Setter Property="Background" Value="#163346" />
-      <Setter Property="Foreground" Value="#D9F7FF" />
-      <Setter Property="FontWeight" Value="Bold" />
-    </Style>
-    <Style Selector="ListBox#NavList ListBoxItem:pointerover">
-      <Setter Property="Background" Value="#0F2A36" />
-      <Setter Property="Foreground" Value="#BFEFFF" />
-    </Style>
-    <Style Selector="ListBox#NavList">
-      <Setter Property="Background" Value="Transparent" />
-      <Setter Property="BorderThickness" Value="0" />
-      <Setter Property="Padding" Value="4" />
-    </Style>
-  </Window.Styles>
 
-  <Grid>
-    <widgets:ParticleFieldControl/>
-    <widgets:AmbientMoodOverlayControl Mode="{Binding OperatingMode}"/>
+  <Grid RowDefinitions="88,*,64"
+        ColumnDefinitions="360,*,360"
+        Margin="20"
+        RowSpacing="18"
+        ColumnSpacing="18">
 
-    <!-- Layout tuned for three-monitor (L / CENTER / R)  -->
-    <Grid RowDefinitions="72,*,56" ColumnDefinitions="360,1.7*,360" Margin="20" ColumnSpacing="18">
-      <Border x:Name="HeaderContainer" Grid.Row="0" Grid.ColumnSpan="3" CornerRadius="18" Background="#D0101827" BorderBrush="#245B7D" BorderThickness="1" Padding="12,8">
-        <Grid RowDefinitions="*,8" ColumnDefinitions="160,*,260" VerticalAlignment="Center">
-          <!-- Logo / Brand area -->
-          <StackPanel Orientation="Horizontal" Spacing="10">
-            <Border Width="44" Height="44" CornerRadius="8" Background="#06202A" BorderBrush="#2E9AB8" BorderThickness="1">
-              <TextBlock Text="WB" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#BFEFFF" FontWeight="Bold"/>
-            </Border>
-            <StackPanel VerticalAlignment="Center">
-              <TextBlock Text="WHITE BRICK NOC OS" FontSize="16" FontWeight="Bold" Foreground="#D9F7FF"/>
-              <TextBlock Text="Network Operations Center" FontSize="11" Foreground="#88CFE8"/>
-            </StackPanel>
+    <widgets:ParticleFieldControl Grid.RowSpan="3" Grid.ColumnSpan="3"/>
+    <widgets:AmbientMoodOverlayControl Grid.RowSpan="3" Grid.ColumnSpan="3"
+                                       Mode="{Binding OperatingMode}"/>
+
+    <Border Grid.Row="0"
+            Grid.ColumnSpan="3"
+            CornerRadius="18"
+            Background="#D0101827"
+            BorderBrush="#245B7D"
+            BorderThickness="1"
+            Padding="12,8">
+      <Grid ColumnDefinitions="320,*,260">
+        <StackPanel Orientation="Horizontal" Spacing="10">
+          <Border Width="44" Height="44" CornerRadius="8"
+                  Background="#06202A"
+                  BorderBrush="#2E9AB8"
+                  BorderThickness="1">
+            <TextBlock Text="WB"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Foreground="#BFEFFF"
+                       FontWeight="Bold"/>
+          </Border>
+          <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="WHITE BRICK NOC OS"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Foreground="#D9F7FF"/>
+            <TextBlock Text="Network Operations Center"
+                       FontSize="12"
+                       Foreground="#88CFE8"/>
           </StackPanel>
-
-          <!-- Center application title area (keeps header balanced) -->
-          <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="WHITE BRICK NOC OS" FontSize="20" FontWeight="Bold" Foreground="#EAFBFF"/>
-            <TextBlock Text="Network Operations Center" FontSize="12" Foreground="#9EE6FF"/>
-          </StackPanel>
-
-          <!-- Right side: clock / date / uptime placeholders -->
-          <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Spacing="18">
-            <StackPanel>
-              <TextBlock Text="{Binding Time}" FontSize="18" FontWeight="Bold" Foreground="#8EF8FF" HorizontalAlignment="Right"/>
-              <TextBlock Text="DATE" FontSize="11" Foreground="#8899AA" HorizontalAlignment="Right"/>
-            </StackPanel>
-            <StackPanel>
-              <TextBlock Text="UPTIME" FontSize="12" Foreground="#BDEEFF" HorizontalAlignment="Right"/>
-              <TextBlock Text="17d 04h" FontSize="11" Foreground="#88CFE8" HorizontalAlignment="Right"/>
-            </StackPanel>
-          </StackPanel>
-
-          <!-- Thin heartbeat / status line -->
-          <Grid Grid.Row="1" Grid.ColumnSpan="3" Height="8" Margin="6,4,6,0">
-            <Rectangle Height="2" Fill="#07202B" VerticalAlignment="Top" Margin="0,3,0,0" RadiusX="1" RadiusY="1" Opacity="0.6"/>
-            <Rectangle Height="1" Fill="#1B4B5E" VerticalAlignment="Top" Margin="0,4,0,0" Opacity="0.4"/>
-            <Ellipse Name="HeartbeatDot" Width="8" Height="8" Fill="#5EE7C8" VerticalAlignment="Top" Margin="8,0,0,0" Opacity="0.9" RenderTransformOrigin="0,0.5">
-              <Ellipse.RenderTransform>
-                <TranslateTransform X="0" Y="0" />
-              </Ellipse.RenderTransform>
-            </Ellipse>
-          </Grid>
-        </Grid>
-      </Border>
-
-      <Border Grid.Row="1" Grid.Column="1" Height="34" VerticalAlignment="Top" Margin="6,8,6,0">
-        <widgets:AlertBannerControl Text="{Binding AlertBannerText}" Severity="{Binding AlertSeverity}"/>
-      </Border>
-
-      <!-- Left operations column: denser enterprise-style status rows -->
-      <!-- LEFT MONITOR: constrained to left column width and optimized spacing for distance readability -->
-      <Border x:Name="LeftMonitorContainer" Grid.Row="1" Grid.Column="0" Margin="0,22,16,0" CornerRadius="12" Background="#081018" BorderBrush="#123642" BorderThickness="1" Padding="16" MaxWidth="360">
-        <StackPanel Spacing="14" VerticalAlignment="Stretch">
-          <TextBlock Text="OPERATIONS" FontSize="22" FontWeight="Bold" Foreground="#C8F6FF" Margin="6,6"/>
-
-          <!-- NETWORK STATUS -->
-          <Border CornerRadius="8" Background="#061018" BorderBrush="#1F6A8D" BorderThickness="1" Padding="10">
-              <StackPanel Spacing="8">
-                <TextBlock Text="NETWORK STATUS" FontSize="17" FontWeight="Bold" Foreground="#D9F7FF"/>
-              <StackPanel Spacing="8">
-                <Grid ColumnDefinitions="32,*,Auto" VerticalAlignment="Center">
-                  <Ellipse Width="16" Height="16" Fill="#6EFFA1" Stroke="#133B2E" StrokeThickness="1" VerticalAlignment="Center"/>
-                  <TextBlock Grid.Column="1" Text="Internet" Foreground="#BDEEFF" VerticalAlignment="Center" Margin="10,0" FontSize="14"/>
-                  <TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1" VerticalAlignment="Center" Margin="10,0" FontSize="14"/>
-                </Grid>
-                <Grid ColumnDefinitions="32,*,Auto">
-                  <Ellipse Width="16" Height="16" Fill="#8EF8FF" Stroke="#16343C" StrokeThickness="1"/>
-                  <TextBlock Grid.Column="1" Text="Router" Foreground="#BDEEFF" Margin="10,0" FontSize="14"/>
-                  <TextBlock Grid.Column="2" Text="ONLINE" Foreground="#8EF8FF" FontSize="14"/>
-                </Grid>
-                <Grid ColumnDefinitions="32,*,Auto">
-                  <Ellipse Width="16" Height="16" Fill="#FFD28A" Stroke="#42321A" StrokeThickness="1"/>
-                  <TextBlock Grid.Column="1" Text="Firewall" Foreground="#BDEEFF" Margin="10,0" FontSize="14"/>
-                  <TextBlock Grid.Column="2" Text="NOMINAL" Foreground="#FFD28A" FontSize="14"/>
-                </Grid>
-                <Grid ColumnDefinitions="32,*,Auto">
-                  <Ellipse Width="16" Height="16" Fill="#6EFFA1" Stroke="#133B2E" StrokeThickness="1"/>
-                  <TextBlock Grid.Column="1" Text="Core Switch" Foreground="#BDEEFF" Margin="10,0" FontSize="14"/>
-                  <TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1" FontSize="14"/>
-                </Grid>
-                <Grid ColumnDefinitions="32,*,Auto">
-                  <Ellipse Width="16" Height="16" Fill="#8FCDD9" Stroke="#0F2E34" StrokeThickness="1"/>
-                  <TextBlock Grid.Column="1" Text="DNS" Foreground="#BDEEFF" Margin="10,0" FontSize="14"/>
-                  <TextBlock Grid.Column="2" Text="OK" Foreground="#8FCDD9" FontSize="14"/>
-                </Grid>
-                <Grid ColumnDefinitions="26,*,Auto">
-                  <Ellipse Width="14" Height="14" Fill="#8FCDD9" Stroke="#0F2E34" StrokeThickness="1"/>
-                  <TextBlock Grid.Column="1" Text="VPN" Foreground="#BDEEFF" Margin="8,0"/>
-                  <TextBlock Grid.Column="2" Text="OK" Foreground="#8FCDD9"/>
-                </Grid>
-              </StackPanel>
-            </StackPanel>
-          </Border>
-
-          <!-- DEVICES -->
-          <Border CornerRadius="8" Background="#061018" BorderBrush="#1F6A8D" BorderThickness="1" Padding="8">
-            <StackPanel>
-              <TextBlock Text="DEVICES" FontSize="16" FontWeight="Bold" Foreground="#D9F7FF"/>
-              <StackPanel Spacing="6">
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Online Devices" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="128" Foreground="#8EF8FF"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Offline Devices" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="02" Foreground="#8899AA"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8EF8FF"/><TextBlock Grid.Column="1" Text="Cameras" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="12" Foreground="#8EF8FF"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Servers" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="24" Foreground="#6EFFA1"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8FCDD9"/><TextBlock Grid.Column="1" Text="PCs" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="56" Foreground="#8FCDD9"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="IoT" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="32" Foreground="#8899AA"/></Grid>
-              </StackPanel>
-            </StackPanel>
-          </Border>
-
-          <!-- POWER -->
-          <Border CornerRadius="8" Background="#061018" BorderBrush="#19B6D2" BorderThickness="1" Padding="8">
-            <StackPanel>
-              <TextBlock Text="POWER" FontSize="16" FontWeight="Bold" Foreground="#D9F7FF"/>
-              <StackPanel Spacing="6">
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8FCDD9"/><TextBlock Grid.Column="1" Text="Utility" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="OK" Foreground="#8FCDD9"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="UPS" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="NORMAL" Foreground="#6EFFA1"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#FFD28A"/><TextBlock Grid.Column="1" Text="Battery" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="84%" Foreground="#FFD28A"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Runtime" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="3h 12m" Foreground="#8899AA"/></Grid>
-              </StackPanel>
-            </StackPanel>
-          </Border>
-
-          <!-- STORAGE -->
-          <Border CornerRadius="8" Background="#061018" BorderBrush="#5B4CFF" BorderThickness="1" Padding="8">
-            <StackPanel>
-              <TextBlock Text="STORAGE" FontSize="16" FontWeight="Bold" Foreground="#D9F7FF"/>
-              <StackPanel Spacing="6">
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="NAS 1" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8FCDD9"/><TextBlock Grid.Column="1" Text="NAS 2" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#8FCDD9"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Available Space" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="12.4 TB" Foreground="#8899AA"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#FFD28A"/><TextBlock Grid.Column="1" Text="RAID Status" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="DEGRADED" Foreground="#FFD28A"/></Grid>
-              </StackPanel>
-            </StackPanel>
-          </Border>
-
-          <!-- WHITE BRICK -->
-          <Border CornerRadius="8" Background="#061018" BorderBrush="#2C3A55" BorderThickness="1" Padding="8">
-            <StackPanel>
-              <TextBlock Text="WHITE BRICK" FontSize="16" FontWeight="Bold" Foreground="#D9F7FF"/>
-              <StackPanel Spacing="6">
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Main Brain" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Nodes Online" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="08 / 08" Foreground="#8EF8FF"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8FCDD9"/><TextBlock Grid.Column="1" Text="CAN Bus" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="OK" Foreground="#8FCDD9"/></Grid>
-                <Grid ColumnDefinitions="26,*,Auto"><Ellipse Width="12" Height="12" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Services" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="Active" Foreground="#6EFFA1"/></Grid>
-              </StackPanel>
-            </StackPanel>
-          </Border>
         </StackPanel>
-      </Border>
 
-      <!-- middle-left column removed to consolidate left monitor panels into column 0 -->
+        <StackPanel Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+          <TextBlock Text="WHITE BRICK NOC OS"
+                     FontSize="22"
+                     FontWeight="Bold"
+                     Foreground="#EAFBFF"/>
+          <TextBlock Text="Network Operations Center"
+                     FontSize="13"
+                     Foreground="#9EE6FF"
+                     HorizontalAlignment="Center"/>
+        </StackPanel>
 
-      <!-- CENTER MONITOR: prioritize globe scale and whitespace; constrain upper panels to reduce footprint -->
-      <Border x:Name="CenterMonitorContainer" Grid.Row="1" Grid.Column="1" Margin="10,18,10,0" CornerRadius="24" Background="#D006101F" BorderBrush="#19B6D2" BorderThickness="1" Padding="20" MinWidth="900">
-        <Grid RowDefinitions="1.4*,140,Auto">
-          <widgets:HeroGlobeControl MaxHeight="900" MinHeight="480" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,8"/>
-
-          <Grid Grid.Row="1" ColumnDefinitions="1.8*,*" Margin="0,6,0,0">
-            <Border CornerRadius="16" Background="#8A081020" BorderBrush="#245B7D" BorderThickness="1">
-              <widgets:PacketStreamControl MaxHeight="120"/>
-            </Border>
-            <Border Grid.Column="1" Margin="10,0,0,0" CornerRadius="12" Background="#8A081020" BorderBrush="#245B7D" BorderThickness="1">
-              <widgets:CameraPreviewWallControl/>
-            </Border>
-          </Grid>
-
-          <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*" Margin="0,12,0,0">
-            <StackPanel>
-              <TextBlock Text="NETWORK SCORE" Foreground="#77C8E8"/>
-              <TextBlock Text="{Binding NetworkScore}" Foreground="#6EFFA1" FontSize="38" FontWeight="Bold"/>
-            </StackPanel>
-            <StackPanel Grid.Column="1">
-              <TextBlock Text="LATENCY" Foreground="#77C8E8"/>
-              <TextBlock Text="{Binding Latency}" Foreground="#8EF8FF" FontSize="30" FontWeight="Bold"/>
-            </StackPanel>
-            <StackPanel Grid.Column="2">
-              <TextBlock Text="DOWN Mbps" Foreground="#77C8E8"/>
-              <TextBlock Text="{Binding Download}" Foreground="#8EF8FF" FontSize="30" FontWeight="Bold"/>
-            </StackPanel>
-            <StackPanel Grid.Column="3">
-              <TextBlock Text="UP Mbps" Foreground="#77C8E8"/>
-              <TextBlock Text="{Binding Upload}" Foreground="#8EF8FF" FontSize="30" FontWeight="Bold"/>
-            </StackPanel>
-          </Grid>
-        </Grid>
-      </Border>
-
-      <!-- RIGHT MONITOR: remove overlaps, rebalance heights, increase spacing and ensure packet inspector readability -->
-<Border x:Name="RightMonitorContainer" Grid.Row="1" Grid.Column="2" Margin="12,18,0,0" CornerRadius="20" Background="#D00A1020" BorderBrush="#1F6A8D" BorderThickness="1" Padding="14" MaxWidth="360">
-  <Grid RowDefinitions="Auto,160,140,160,*,160,160" RowSpacing="14">
-    <TextBlock Text="LIVE CONSOLE" FontSize="20" FontWeight="Bold" Foreground="#C8F6FF"/>
-
-    <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="0,10,0,0">
-      <widgets:SystemMicroPanelControl Cpu="{Binding Cpu}" Memory="{Binding Memory}" Packets="{Binding PacketRate}" Mode="{Binding OperatingMode}"/>
-      <Grid Grid.Column="1" ColumnDefinitions="*,*">
-        <widgets:GaugeRingControl Value="32" Label="CPU"/>
-        <widgets:GaugeRingControl Grid.Column="1" Value="48" Label="MEM"/>
-      </Grid>
-    </Grid>
-
-    <Border Grid.Row="2" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#245B7D" BorderThickness="1" Padding="12" MinHeight="120">
-      <StackPanel>
-        <TextBlock Text="WEATHER" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
-        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+        <StackPanel Grid.Column="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Spacing="18">
           <StackPanel>
-            <TextBlock Text="Ashland, VA" Foreground="#EAFBFF" FontWeight="Bold"/>
-            <TextBlock Text="Condition: Clear" Foreground="#BDEEFF" FontSize="12"/>
-            <TextBlock Text="Temperature: 72 °F" Foreground="#8EF8FF" FontSize="12"/>
+            <TextBlock Text="{Binding Time}"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Foreground="#8EF8FF"
+                       HorizontalAlignment="Right"/>
+            <TextBlock Text="DATE"
+                       FontSize="11"
+                       Foreground="#8899AA"
+                       HorizontalAlignment="Right"/>
           </StackPanel>
-          <StackPanel Margin="18,0,0,0">
-            <TextBlock Text="Wind: 6 mph NW" Foreground="#BDEEFF" FontSize="12"/>
-            <TextBlock Text="Humidity: 54%" Foreground="#BDEEFF" FontSize="12"/>
+          <StackPanel>
+            <TextBlock Text="UPTIME"
+                       FontSize="12"
+                       Foreground="#BDEEFF"
+                       HorizontalAlignment="Right"/>
+            <TextBlock Text="17d 04h"
+                       FontSize="11"
+                       Foreground="#88CFE8"
+                       HorizontalAlignment="Right"/>
           </StackPanel>
         </StackPanel>
-      </StackPanel>
-    </Border>
-
-    <Border Grid.Row="3" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#24D7FF" BorderThickness="1" Padding="12" MinHeight="140">
-      <Grid RowDefinitions="Auto,*">
-        <TextBlock Text="NETWORK RADAR" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
-        <Grid Grid.Row="1" Margin="0,6,0,0">
-          <widgets:RadarControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-          <!-- subtle node overlays (static placeholders) -->
-          <Canvas IsHitTestVisible="False">
-            <Ellipse Width="6" Height="6" Fill="#8EF8FF" Canvas.Left="48" Canvas.Top="24" Opacity="0.9"/>
-            <Ellipse Width="6" Height="6" Fill="#6EFFA1" Canvas.Left="88" Canvas.Top="44" Opacity="0.9"/>
-            <Ellipse Width="6" Height="6" Fill="#FFD28A" Canvas.Left="124" Canvas.Top="36" Opacity="0.9"/>
-          </Canvas>
-        </Grid>
       </Grid>
     </Border>
 
-    <Border Grid.Row="4" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#2C3A55" BorderThickness="1" Padding="12" MinHeight="140">
-      <StackPanel>
-        <TextBlock Text="LIVE CONSOLE" Foreground="#BDEEFF" FontSize="16" FontWeight="Bold"/>
-        <StackPanel Margin="0,10,0,0" Spacing="8">
-          <TextBlock Text="[12:03:21] INFO  System initialized" Foreground="#BDEEFF" FontSize="14"/>
-          <TextBlock Text="[12:05:04] OK    WAN link stable" Foreground="#6EFFA1" FontSize="14"/>
-          <TextBlock Text="[12:08:12] WARN  Packet loss detected" Foreground="#FFD28A" FontSize="14"/>
-          <TextBlock Text="[12:10:01] INFO  Backup started" Foreground="#BDEEFF" FontSize="14"/>
-        </StackPanel>
-      </StackPanel>
+    <views:LeftOperationsPanel Grid.Row="1" Grid.Column="0"/>
+    <views:CenterMissionPanel Grid.Row="1" Grid.Column="1"/>
+    <views:RightIntelligencePanel Grid.Row="1" Grid.Column="2"/>
+
+    <Border Grid.Row="2"
+            Grid.ColumnSpan="3"
+            CornerRadius="14"
+            Background="#0E0913"
+            BorderBrush="#123642"
+            BorderThickness="1"
+            Padding="12,10">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <TextBlock Text="{Binding OperatingMode}"
+                   Foreground="#8EF8FF"
+                   FontSize="13"
+                   FontWeight="Bold"/>
+        <TextBlock Grid.Column="1"
+                   Text="{Binding AlertBannerText}"
+                   Foreground="#D9F7FF"
+                   FontSize="13"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="2"
+                   Text="{Binding Time}"
+                   Foreground="#BDEEFF"
+                   FontSize="13"/>
+      </Grid>
     </Border>
 
-    <Border Grid.Row="5" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#5B4CFF" BorderThickness="1" Padding="10">
-      <StackPanel>
-        <TextBlock Text="CAMERAS" Foreground="#BDEEFF" FontSize="12" FontWeight="Bold"/>
-        <StackPanel Margin="0,8,0,0" Spacing="6">
-          <Grid ColumnDefinitions="18,*,Auto"><Ellipse Width="10" Height="10" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Front Door" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1"/></Grid>
-          <Grid ColumnDefinitions="18,*,Auto"><Ellipse Width="10" Height="10" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Garage" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1"/></Grid>
-          <Grid ColumnDefinitions="18,*,Auto"><Ellipse Width="10" Height="10" Fill="#8899AA"/><TextBlock Grid.Column="1" Text="Driveway" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="OFFLINE" Foreground="#8899AA"/></Grid>
-          <Grid ColumnDefinitions="18,*,Auto"><Ellipse Width="10" Height="10" Fill="#6EFFA1"/><TextBlock Grid.Column="1" Text="Shop" Foreground="#BDEEFF" Margin="8,0"/><TextBlock Grid.Column="2" Text="ONLINE" Foreground="#6EFFA1"/></Grid>
-        </StackPanel>
-      </StackPanel>
-    </Border>
-
-    <Border Grid.Row="6" Margin="0,0,0,0" CornerRadius="10" Background="#0A081018" BorderBrush="#1F6A8D" BorderThickness="1" Padding="12" MinHeight="160">
-      <StackPanel>
-        <TextBlock Text="PACKET INSPECTOR" Foreground="#BDEEFF" FontSize="14" FontWeight="Bold"/>
-        <Grid Margin="0,8,0,0">
-          <Grid ColumnDefinitions="*,*,*,Auto,Auto">
-            <TextBlock Text="Protocol" Foreground="#89D7FF" FontSize="12"/>
-            <TextBlock Grid.Column="1" Text="Source" Foreground="#89D7FF" FontSize="12"/>
-            <TextBlock Grid.Column="2" Text="Destination" Foreground="#89D7FF" FontSize="12"/>
-            <TextBlock Grid.Column="3" Text="Rate" Foreground="#89D7FF" FontSize="12"/>
-            <TextBlock Grid.Column="4" Text="Status" Foreground="#89D7FF" FontSize="12"/>
-          </Grid>
-          <Grid Margin="0,6,0,0" ColumnDefinitions="*,*,*,Auto,Auto">
-            <TextBlock Text="TCP" FontSize="12"/>
-            <TextBlock Grid.Column="1" Text="10.1.8.24" FontSize="12"/>
-            <TextBlock Grid.Column="2" Text="192.168.1.12" FontSize="12"/>
-            <TextBlock Grid.Column="3" Text="12 pk/s" FontSize="12"/>
-            <TextBlock Grid.Column="4" Text="OK" Foreground="#6EFFA1" FontSize="12"/>
-          </Grid>
-          <Grid Margin="0,4,0,0" ColumnDefinitions="*,*,*,Auto,Auto">
-            <TextBlock Text="UDP" FontSize="12"/>
-            <TextBlock Grid.Column="1" Text="10.1.8.45" FontSize="12"/>
-            <TextBlock Grid.Column="2" Text="8.8.8.8" FontSize="12"/>
-            <TextBlock Grid.Column="3" Text="3 pk/s" FontSize="12"/>
-            <TextBlock Grid.Column="4" Text="WARN" Foreground="#FFD28A" FontSize="12"/>
-          </Grid>
-        </Grid>
-      </StackPanel>
-    </Border>
-  </Grid>
-</Border>
-
-      <Border x:Name="BottomStatusBarContainer" Grid.Row="2" Grid.ColumnSpan="3" CornerRadius="14" Background="#0E0913" BorderBrush="#123642" BorderThickness="1" Padding="12,10" Margin="0,18,0,0">
-        <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
-          <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
-            <TextBlock Text="{Binding OperatingMode}" Foreground="#8EF8FF" FontSize="13" FontWeight="Bold"/>
-            <TextBlock Text="{Binding AlertSeverity}" Foreground="#BDEEFF" FontSize="13" Opacity="0.8"/>
-          </StackPanel>
-          <TextBlock Grid.Column="1" Text="{Binding AlertBannerText}" Foreground="#D9F7FF" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-          <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" VerticalAlignment="Center">
-            <TextBlock Text="{Binding Time}" Foreground="#BDEEFF" FontSize="13"/>
-            <TextBlock Text="|" Foreground="#5B8AA3" FontSize="13" Opacity="0.65"/>
-            <TextBlock Text="Assets: " Foreground="#BDEEFF" FontSize="13"/>
-            <TextBlock Text="{Binding RegisteredAssetCount}" Foreground="#8EF8FF" FontSize="13"/>
-          </StackPanel>
-        </Grid>
-      </Border>
-    </Grid>
-
-    <Border HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Width="420"
-            Height="220"
-            Margin="0,96,24,0"
-            IsVisible="{Binding DeveloperOverlayVisible}"
-            CornerRadius="12"
-            Background="#00000000">
-      <widgets:DeveloperOverlayControl EngineVersion="{Binding EngineVersion}"
-                                       SceneNodes="{Binding SceneNodeCount}"
-                                       DisplayZones="{Binding DisplayZoneCount}"
-                                       Assets="{Binding RegisteredAssetCount}"/>
-    </Border>
   </Grid>
 </Window>
