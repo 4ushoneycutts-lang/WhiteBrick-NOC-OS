@@ -11,12 +11,7 @@ public sealed class NocEventService
         string message,
         NocEventSeverity severity = NocEventSeverity.Info)
     {
-        Events.Insert(0,
-            new NocEvent(
-                DateTime.Now,
-                source,
-                message,
-                severity));
+        Events.Insert(0, new NocEvent(DateTime.Now, source, message, severity));
 
         while (Events.Count > 250)
             Events.RemoveAt(Events.Count - 1);
